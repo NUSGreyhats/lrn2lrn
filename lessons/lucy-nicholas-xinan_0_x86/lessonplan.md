@@ -166,11 +166,13 @@ Here's the 64-bit version of the same program. Take note that the arguments are 
 Under [./build/](./build/) there are three programs whose names has the word "secret" in them. Try disassemble them and figure out what they do. Both 32-bit and 64-bit binaries are provided. The source code are in the `./src/` folder but please do not look at them before you attempt.
 
 If you do not know how to disassemble a binary yet, one way to do it is:
-```
-objdump -d <binary_file>
+```shell
+$ objdump -d <binary_file>
 ```
 
 ## Resources
+* [Intel x86 Instruction Set Reference](http://www.felixcloutier.com/x86/)
+* [Difference Between Intel and AT&T Syntax](http://www.imada.sdu.dk/Courses/DM18/Litteratur/IntelnATT.htm)
 
 ## References
 * <https://www.tutorialspoint.com/assembly_programming/assembly_registers.htm>
