@@ -16,6 +16,9 @@
 ## Binary, Hex, and Endians
 
 ## How Does A Processor Work
+This is not a computer architecture class. I am just going to tell you that a processor has a number of registers that can be used as temporary store of values, and one or more arithmetic and logic units (ALUs) that can perform operations on the registers.
+
+The processor fetches instructions from the memory, determines what to do, be it adding two numbers or loading data from the memory, and executes it.
 
 ## Basic Registers
 In x86, there are a lot of registers. We will only focus on the ones that we can usually see in assembly codes, including 8 of the 16 general purpose registers and 2 status registers.
@@ -67,6 +70,7 @@ These are the steps to call a subroutine:
 
 This is the stack frame of a subroutine that has 3 parameters and 3 local variables:
 ![A single stack frame](http://www.cs.virginia.edu/~evans/cs216/guides/stack-convention.png)
+
 Note that the stack grows from higher addresses to lower addresses. The figure above is for a 32-bit system, so each cell in the stack is 32-bit wide, therefore the memory addresses are 4 bytes apart. (Use of e-prefixed registers also shows that it is 32-bit.)
 
 Below is the assembly of a program that adds three hardcoded numbers and prints out the result, compiled in 32-bit.
