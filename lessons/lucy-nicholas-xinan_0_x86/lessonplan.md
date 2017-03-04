@@ -14,6 +14,58 @@
 ## Why Assembly
 
 ## Binary, Hex, and Endians
+Our layman numbers are in base 10 form. Hexadecimal numbers, like its name suggests, are numbers in the base 16 form.
+
+```
++-------------+----------+--------------+------------+
+| Hexadecimal |  Decimal |  Hexadecimal |   Decimal  |
++-------------+----------+--------------+------------+
+|      0      |     0    |       A      |      10    |
+|      1      |     1    |       B      |      11    |
+|      2      |     2    |       C      |      12    |
+|      3      |     3    |       D      |      13    |
+|      4      |     4    |       E      |      14    |
+|      5      |     5    |       F      |      15    |
+|      6      |     6    |              |            |
+|      7      |     7    |              |            |
+|      8      |     8    |              |            |
+|      9      |     9    |              |            |
++-------------+----------+--------------+------------+
+```
+
+### Decimal
+The value of a decimal number is as follows.
+Considering the number: (1234) <sub>10</sub>
+
+<p>(1234) <sub>10</sub> =  1(10)<sup>3</sup> + 2(10)<sup>2</sup> + 3(10)<sup>1</sup>+ 4(10)<sup>0</sup> = (1234) <sub>10</sub> </p>
+
+###Hexadecimal
+Similarly, the value of hexadecimals can be derived the same way.
+Considering the number: (3D2F) <sub>16</sub>
+
+<p>(3D2F) <sub>16</sub> =  3(16)<sup>3</sup> + 13(16)<sup>2</sup> + 2(16)<sup>1</sup>+ 15(16)<sup>0</sup> = (15663) <sub>10</sub> </p>
+
+###0x prefix
+In `C` based languages, hexadecimal numbers are prepended with a `0x` to tell the compiler that the number following is a hexadecimal.
+ `(3D2F)` <sub>`16`</sub> will therefore appear as `0x3D2F`
+
+##Little Endian and Big Endian
+These two standards describe the order in which a sequence of bytes are stored in a computer’s memory.
+
+![Little vs Big Endian](https://chortle.ccsu.edu/AssemblyTutorial/Chapter-15/bigLittleEndian.gif)
+
+This order is important and must be known to the language compilers in order for values to be stored. 
+
+Most of the time, the Big Endian standard is adopted as it is more intuitive. However, in certain cases like in Intel CPUs the Little Endian standard may be used, as this simplifies certain operations, thus improving efficiency.
+
+###Big Endian
+The ‘Big End’, ie. the most significant value in the sequence of bytes is stored into the smallest address, at the top of the stack.
+
+###Little Endian
+The ‘Little End’ ie. the least significant value in the sequence of bytes, is stored first into the smallest address, at the top of the stack.
+
+The Little Endian standard is used in x86.
+
 
 ## How Does A Processor Work
 This is not a computer architecture class. I am just going to tell you that a processor has a number of registers that can be used as temporary store of values, and one or more arithmetic and logic units (ALUs) that can perform operations on the registers.
@@ -53,6 +105,66 @@ The first one is `rflags` / `eflags` / `flags`. It holds a lot of information ab
 The second one is `rip` / `eip` / `ip`, which is the instruction pointer. It points to the next instruction that the processor will be executing. If we can control where the instruction pointer poionts to, we can manipulate the control flow of the program.
 
 ## Basic x86 Instructions
+<h3>Syntax</h3>
+There are two syntaxes of x86 Assembly:
+<table>
+<tr>
+<th></th>
+<th>AT&T</th>
+<th>Intel</th>
+</tr>
+<tr>
+<td>Parameter Order</td>
+<td>```<operand> <src> <dest>```</td>
+<td>```<operand> <dest> <src>```</td>
+</tr>
+	<tr>
+		<td>Sigils</td>
+		<td>$ represents immediate values<br/>% represents registers</td>
+<td>Assembler automatically detects</td>
+	</tr>
+</table>
+In this lesson we’ll be referencing the AT&T syntax.
+
+<h3>Accessing Memory Addresses</h3>
+
+
+<h3>Data Movement Instructions</h3>
+<b>mov</b> - Move
+
+<b>push</b> - Push stack
+
+<b>pop</b> - Pop stack
+
+
+<h3>Arithmetic and Logic Instructions</h3>
+<b>add</b> - Integer Addition
+
+<b>sub</b> - Integer Subtraction
+
+<b>imul</b> - Integer Multiplication
+
+<b>idiv</b> - Integer Division
+
+<b>and, or, xor</b> - Bitwise Operations
+
+<b>shl, shr</b> - Shift Left, Shift Right
+
+<h3>Control Flow Instructions</h3>
+<b>jmp</b> - Jump
+
+<b>cmp</b> - Compare
+
+<b>jcondition</b> - Conditional Jump
+<ul>
+<li>je - Jump when Equal</li>
+<li>jz - Jump when Zero</li>
+<li>jne - Jump when Not Equal</li>
+<li>jg - Jump when Greater Than</li>
+<li>jge - Jump when Greater Than or Equal To</li>
+<li>jl - Jump when Less Than</li>
+<li>jle - Jump when Less Than or Equal To</li>
+</ul>
 
 ## Calling Conventions and Stack Frames
 To allow programs written by different programmers to be able to call one another, and to simplify the use of subroutines in general, programmers and compilers typically adopt a common calling convention. The calling convention is a protocol about how the call and return from subroutines, such as which registers are for arguments and which register stores the return value. With that, a programmer does not need to read the definition of a subroutine to determine how to pass parameters to that subroutine and how to get the return value from it.
