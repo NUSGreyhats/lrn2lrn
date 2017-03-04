@@ -6,6 +6,7 @@ The Greyhats Lrn2Lrn Series where People Teach Each Other Things. Please see
 ## Table of Contents
 
 1. [Sample Lesson][1]
+2. [Introduction to x86 Assembly][2]
 
 ## Getting Started
 
@@ -48,3 +49,4 @@ not familiar with so you will learn something new.
 Feel free to add more topics you are interested in.
 
 [1]: ./lessons/amon_0_sample/lessonplan.md
+[2]: ./lessons/lucy-nicholas-xinan_0_x86/lessonplan.md
