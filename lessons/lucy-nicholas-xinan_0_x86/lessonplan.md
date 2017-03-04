@@ -163,7 +163,12 @@ Here's the 64-bit version of the same program. Take note that the arguments are 
 ```
 
 ## Hands-on Exercises
+Under [./build/](./build/) there are three programs whose names has the word "secret" in them. Try disassemble them and figure out what they do. Both 32-bit and 64-bit binaries are provided. The source code are in the `./src/` folder but please do not look at them before you attempt.
 
+If you do not know how to disassemble a binary yet, one way to do it is:
+```
+objdump -d <binary_file>
+```
 
 ## Resources
 
