@@ -115,45 +115,177 @@ There are two syntaxes of x86 Assembly:
 </tr>
 <tr>
 <td>Parameter Order</td>
-<td>```<operand> <src> <dest>```</td>
-<td>```<operand> <dest> <src>```</td>
+<td>```<operand> <src> <dst>```</td>
+<td>```<operand> <dst> <src>```</td>
 </tr>
-	<tr>
-		<td>Sigils</td>
-		<td>$ represents immediate values<br/>% represents registers</td>
+  <tr>
+    <td>Sigils</td>
+    <td>Constants are prefixed with $<br/>
+    Registers are prefixed with %</td>
 <td>Assembler automatically detects</td>
-	</tr>
+  </tr>
 </table>
 In this lesson we’ll be referencing the AT&T syntax.
 
-<h3>Accessing Memory Addresses</h3>
+<h3>Memory Addressing Modes</h3>
+There are 3 basic modes of addressing:<br>
+- Immediate addressing
+- Register addressing
+- Memory addressing
 
+```
+     $0x1  = constant value 1
+     %eax  = register value
+ 0x4(%eax) = memory address(register value + 4)
+```
 
 <h3>Data Movement Instructions</h3>
+Commonly seen instruction suffixes:<br/>
+- b (byte = 8 bits)
+- w (word = 2 bytes = 16 bits)
+- l (long = 4 bytes = 32 bits)
+
+E.g. movw, pushl
+
 <b>mov</b> - Move
+Copies the data from src to dst. 
+```
+mov %eax, %edx       -->  edx = eax
+mov $0x4, %edx       -->  edx = 0x4
+mov $0x4, 0x4(%edx)  -->  mem(0x8) = 0x4
+```
+
+However memory-to-memory moves are not possible, you will have to load the value into register before copying into the destination memory.
+
+Cannot be done:
+```
+mov 0x4(%eax), 0x8(%eax)
+```
+
+Correct method:
+```
+mov 0x4(%eax), %edx
+mov %edx, 0x8(%eax)
+```
 
 <b>push</b> - Push stack
+Writing a value into the stack.
+```
+push $0x4  -->  0x4 is now in stack
+```
 
 <b>pop</b> - Pop stack
-
+Restoring value that is on top of the stack
+```
+pop %eax   -->  eax = 0x4, 0x4 is gone from stack
+```
 
 <h3>Arithmetic and Logic Instructions</h3>
 <b>add</b> - Integer Addition
+Adds src and dst, and store results in dst
+```
+mov $0x4, %eax  -->  eax = 4
+add $0x4, %eax  -->  eax = 8
+```
 
 <b>sub</b> - Integer Subtraction
+Subtracts src from dst, and store results in dst
+```
+mov $0x8, %eax  -->  eax = 8
+sub $0x4, %eax  -->  eax = 4
+```
 
 <b>imul</b> - Integer Multiplication
+imul instruction has two formats: two-operands format, three-operands format. For both, the dst must be a register.<br>
+
+Two operands:
+```
+mov  $0x4, %eax  -->  eax = 4
+imul $0x4, %eax  -->  eax = 16
+```
+
+Three operands:
+```
+mov  $0x4, %eax        -->  eax = 4
+imul $0x4, %eax, %edx  -->  edx = 16
+```
 
 <b>idiv</b> - Integer Division
+idiv instruction takes in only one operand, either register value or memory location. It only works with signed numbers. Dividend is always either AH:AL (byte), DX:AX (word) or EDX:EAX (long). Quotient results will be stored in EAX and remainder is stored in EDX.
+
+```
+mov $0x4, %eax  -->  eax = 4
+mov $0x2, %ebx  -->  ebx = 2
+cltd            -->  convert signed long to signed double long (EAX -> EDX:EAX)
+idiv %ebx       -->  eax = 2, edx = 0
+```
 
 <b>and, or, xor</b> - Bitwise Operations
+Logical bitwise and, or, and exclusive or operations.
+
+```
+mov $0x4, %eax  -->  eax = 4
+and $0xf, %eax  -->  eax = 4
+and $0x0, %eax  -->  eax = 0
+
+mov $0x4, %eax  -->  eax = 4
+or  $0xf, %eax  -->  eax = 15
+or  $0x0, %eax  -->  eax = 4
+
+mov $0x4, %eax  -->  eax = 4
+xor $0xf, %eax  -->  eax = 11
+xor $0x0, %eax  -->  eax = 4
+```
+
+<b>not</b> - Bitwise Logical Not
+not instruction takes in only one operand. Flips all bit values in the operand.
+
+```
+mov $0x4, %eax  -->  eax = 4
+not %eax        -->  eax = 11
+```
+
+<b>neg</b> - Negate
+Performs two’s complement negation on operand contents, which is essentially ‘not + 1’.
+
+```
+mov $0x4, %eax  -->  eax = 4
+neg %eax        -->  eax = 12
+```
 
 <b>shl, shr</b> - Shift Left, Shift Right
+Shift bits left and shift bits right.
+
+```
+mov $0x4 , %eax  -->  eax = 4
+shl $0x1 , %eax  -->  eax = 8
+shl $0x1c, %eax  -->  eax = 2,147,483,648 (negative if signed)
+sh1 $0x1 , %eax  -->  eax = 0
+
+mov $0x4,  %eax  -->  eax = 4
+shr $0x1,  %eax  -->  eax = 2
+shr $0x1c, %eax  -->  eax = 0
+```
 
 <h3>Control Flow Instructions</h3>
+Control flow instructions allow you to make the program execute instructions at another address other than the next instruction in memory. The <u>label</u> notations are symbolic names for a memory address.
+
 <b>jmp</b> - Jump
+Causes the program to execute instruction at another memory address.
+
+```
+HelloWorld: mov $0x4, %eax
+      jmp HelloWorld  --> Infinite loop, don’t do this.
+```
 
 <b>cmp</b> - Compare
+Compare values of src and dst by using ‘sub’ instruction and stores into a special register called ‘Machine Status Word’ (MSW). cmp instruction is usually used before conditional jump instructions, and the result stored in the special register is referred to by them.
+
+```
+mov $0x4, %eax  -->  eax = 4
+mov $0x1, %edx  -->  edx = 1
+cmp %eax, %edx  -->  msw = -3
+```
 
 <b>jcondition</b> - Conditional Jump
 <ul>
@@ -165,6 +297,19 @@ In this lesson we’ll be referencing the AT&T syntax.
 <li>jl - Jump when Less Than</li>
 <li>jle - Jump when Less Than or Equal To</li>
 </ul>
+
+```
+mov $0x4, %eax  -->  eax = 4
+mov $0x1, %edx  -->  edx = 1
+cmp %eax, %edx  -->  msw = -3
+je  HelloWorld  -->  don’t jump
+jz  HelloWorld  -->  don’t jump
+jne HelloWorld  -->  jump
+jg  HelloWorld  -->  don’t jump
+jge HelloWorld  -->  don’t jump
+jl  HelloWorld  -->  jump
+jle HelloWorld  -->  jump
+```
 
 ## Calling Conventions and Stack Frames
 To allow programs written by different programmers to be able to call one another, and to simplify the use of subroutines in general, programmers and compilers typically adopt a common calling convention. The calling convention is a protocol about how the call and return from subroutines, such as which registers are for arguments and which register stores the return value. With that, a programmer does not need to read the definition of a subroutine to determine how to pass parameters to that subroutine and how to get the return value from it.
