@@ -7,6 +7,7 @@ The Greyhats Lrn2Lrn Series where People Teach Each Other Things. Please see
 
 1. [Sample Lesson][1]
 2. [Introduction to x86 Assembly][2]
+3. [Introduction to Linux Exploitation][3]
 
 ## Getting Started
 
@@ -50,3 +51,4 @@ Feel free to add more topics you are interested in.
 
 [1]: ./lessons/amon_0_sample/lessonplan.md
 [2]: ./lessons/lucy-nicholas-xinan_0_x86/lessonplan.md
+[3]: ./lessons/fiona-yuxi_3_linux/lessonplan.md
