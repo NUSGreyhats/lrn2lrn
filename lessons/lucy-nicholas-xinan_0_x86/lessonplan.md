@@ -12,6 +12,9 @@
 8. [References](#references)
 
 ## Why Assembly
+To understand why assembly is useful, we must be aware of how a programme is created. First, we humans code it in a high level language, then compile it. The compiler then translates that into lower level languages, and finally into binary, which the computer understands.<br/>
+
+In between the high level code and binary is the assembly. Oftentimes, we may want to find out what a programme does, but the source code may not be freely available to us. By analysing the assembly through an object dump of an executable programme, we may trace line by line what a programme does, and then reverse engineer it to get the source code.
 
 ## Binary, Hex, and Endians
 Our layman numbers are in base 10 form. Hexadecimal numbers, like its name suggests, are numbers in the base 16 form.
