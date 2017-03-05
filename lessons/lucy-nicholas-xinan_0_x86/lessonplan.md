@@ -115,8 +115,8 @@ There are two syntaxes of x86 Assembly:
 </tr>
 <tr>
 <td>Parameter Order</td>
-<td>```<operand> <src> <dst>```</td>
-<td>```<operand> <dst> <src>```</td>
+<td>`<operand> <src> <dst>`</td>
+<td>`<operand> <dst> <src>`</td>
 </tr>
   <tr>
     <td>Sigils</td>
@@ -147,7 +147,7 @@ Commonly seen instruction suffixes:<br/>
 
 E.g. movw, pushl
 
-<b>mov</b> - Move
+<b>mov</b> - Move<br/>
 Copies the data from src to dst. 
 ```
 mov %eax, %edx       -->  edx = eax
@@ -168,35 +168,32 @@ mov 0x4(%eax), %edx
 mov %edx, 0x8(%eax)
 ```
 
-<b>push</b> - Push stack
+<b>push</b> - Push stack<br/>
 Writing a value into the stack.
 ```
 push $0x4  -->  0x4 is now in stack
 ```
 
-<b>pop</b> - Pop stack
+<b>pop</b> - Pop stack<br/>
 Restoring value that is on top of the stack
 ```
 pop %eax   -->  eax = 0x4, 0x4 is gone from stack
 ```
 
 <h3>Arithmetic and Logic Instructions</h3>
-<b>add</b> - Integer Addition
-Adds src and dst, and store results in dst
+<b>add</b> - Integer Addition<br/>Adds src and dst, and store results in dst
 ```
 mov $0x4, %eax  -->  eax = 4
 add $0x4, %eax  -->  eax = 8
 ```
 
-<b>sub</b> - Integer Subtraction
-Subtracts src from dst, and store results in dst
+<b>sub</b> - Integer Subtraction<br/>Subtracts src from dst, and store results in dst
 ```
 mov $0x8, %eax  -->  eax = 8
 sub $0x4, %eax  -->  eax = 4
 ```
 
-<b>imul</b> - Integer Multiplication
-imul instruction has two formats: two-operands format, three-operands format. For both, the dst must be a register.<br>
+<b>imul</b> - Integer Multiplication<br/>imul instruction has two formats - two-operands format and three-operands format. For both, the dst must be a register.<br>
 
 Two operands:
 ```
@@ -210,7 +207,7 @@ mov  $0x4, %eax        -->  eax = 4
 imul $0x4, %eax, %edx  -->  edx = 16
 ```
 
-<b>idiv</b> - Integer Division
+<b>idiv</b> - Integer Division<br/>
 idiv instruction takes in only one operand, either register value or memory location. It only works with signed numbers. Dividend is always either AH:AL (byte), DX:AX (word) or EDX:EAX (long). Quotient results will be stored in EAX and remainder is stored in EDX.
 
 ```
@@ -220,7 +217,7 @@ cltd            -->  convert signed long to signed double long (EAX -> EDX:EAX)
 idiv %ebx       -->  eax = 2, edx = 0
 ```
 
-<b>and, or, xor</b> - Bitwise Operations
+<b>and, or, xor</b> - Bitwise Operations<br/>
 Logical bitwise and, or, and exclusive or operations.
 
 ```
@@ -237,7 +234,7 @@ xor $0xf, %eax  -->  eax = 11
 xor $0x0, %eax  -->  eax = 4
 ```
 
-<b>not</b> - Bitwise Logical Not
+<b>not</b> - Bitwise Logical Not<br/>
 not instruction takes in only one operand. Flips all bit values in the operand.
 
 ```
@@ -245,7 +242,7 @@ mov $0x4, %eax  -->  eax = 4
 not %eax        -->  eax = 11
 ```
 
-<b>neg</b> - Negate
+<b>neg</b> - Negate<br/>
 Performs two’s complement negation on operand contents, which is essentially ‘not + 1’.
 
 ```
@@ -253,7 +250,7 @@ mov $0x4, %eax  -->  eax = 4
 neg %eax        -->  eax = 12
 ```
 
-<b>shl, shr</b> - Shift Left, Shift Right
+<b>shl, shr</b> - Shift Left, Shift Right<br/>
 Shift bits left and shift bits right.
 
 ```
@@ -270,7 +267,7 @@ shr $0x1c, %eax  -->  eax = 0
 <h3>Control Flow Instructions</h3>
 Control flow instructions allow you to make the program execute instructions at another address other than the next instruction in memory. The <u>label</u> notations are symbolic names for a memory address.
 
-<b>jmp</b> - Jump
+<b>jmp</b> - Jump<br/>
 Causes the program to execute instruction at another memory address.
 
 ```
@@ -278,7 +275,7 @@ HelloWorld: mov $0x4, %eax
       jmp HelloWorld  --> Infinite loop, don’t do this.
 ```
 
-<b>cmp</b> - Compare
+<b>cmp</b> - Compare<br/>
 Compare values of src and dst by using ‘sub’ instruction and stores into a special register called ‘Machine Status Word’ (MSW). cmp instruction is usually used before conditional jump instructions, and the result stored in the special register is referred to by them.
 
 ```
