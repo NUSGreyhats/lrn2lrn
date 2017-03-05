@@ -181,19 +181,22 @@ pop %eax   -->  eax = 0x4, 0x4 is gone from stack
 ```
 
 <h3>Arithmetic and Logic Instructions</h3>
-<b>add</b> - Integer Addition<br/>Adds src and dst, and store results in dst
+<b>add</b> - Integer Addition<br/>
+Adds src and dst, and store results in dst
 ```
 mov $0x4, %eax  -->  eax = 4
 add $0x4, %eax  -->  eax = 8
 ```
 
-<b>sub</b> - Integer Subtraction<br/>Subtracts src from dst, and store results in dst
+<b>sub</b> - Integer Subtraction<br/>
+Subtracts src from dst, and store results in dst
 ```
 mov $0x8, %eax  -->  eax = 8
 sub $0x4, %eax  -->  eax = 4
 ```
 
-<b>imul</b> - Integer Multiplication<br/>imul instruction has two formats - two-operands format and three-operands format. For both, the dst must be a register.<br>
+<b>imul</b> - Integer Multiplication<br/>
+`imul` instruction has two formats - two-operands format and three-operands format. For both, the dst must be a register.<br>
 
 Two operands:
 ```
@@ -208,13 +211,13 @@ imul $0x4, %eax, %edx  -->  edx = 16
 ```
 
 <b>idiv</b> - Integer Division<br/>
-idiv instruction takes in only one operand, either register value or memory location. It only works with signed numbers. Dividend is always either AH:AL (byte), DX:AX (word) or EDX:EAX (long). Quotient results will be stored in EAX and remainder is stored in EDX.
+`idiv` instruction takes in only one operand, either register or memory address. It only works with signed numbers. Dividend is always either AH:AL (byte), DX:AX (word) or EDX:EAX (long). Quotient results will be stored in EAX and remainder is stored in EDX.
 
 ```
-mov $0x4, %eax  -->  eax = 4
-mov $0x2, %ebx  -->  ebx = 2
-cltd            -->  convert signed long to signed double long (EAX -> EDX:EAX)
-idiv %ebx       -->  eax = 2, edx = 0
+mov  $0x2, %ebx  -->  ebx = 2
+mov  $0x4, %eax  -->  eax = 4
+cltd             -->  convert signed long to signed double long (EAX -> EDX:EAX)
+idiv %ebx        -->  eax = 2, edx = 0
 ```
 
 <b>and, or, xor</b> - Bitwise Operations<br/>
@@ -235,7 +238,7 @@ xor $0x0, %eax  -->  eax = 4
 ```
 
 <b>not</b> - Bitwise Logical Not<br/>
-not instruction takes in only one operand. Flips all bit values in the operand.
+`not` instruction takes in only one operand. Flips all bit values in the operand.
 
 ```
 mov $0x4, %eax  -->  eax = 4
@@ -276,7 +279,7 @@ HelloWorld: mov $0x4, %eax
 ```
 
 <b>cmp</b> - Compare<br/>
-Compare values of src and dst by using ‘sub’ instruction and stores into a special register called ‘Machine Status Word’ (MSW). cmp instruction is usually used before conditional jump instructions, and the result stored in the special register is referred to by them.
+Compare values of src and dst by using `sub` instruction and stores into a special register called ‘Machine Status Word’ (MSW). cmp instruction is usually used before conditional jump instructions, and the result stored in the special register is referred to by them.
 
 ```
 mov $0x4, %eax  -->  eax = 4
@@ -306,6 +309,15 @@ jg  HelloWorld  -->  don’t jump
 jge HelloWorld  -->  don’t jump
 jl  HelloWorld  -->  jump
 jle HelloWorld  -->  jump
+```
+
+<b>call, ret</b> - Subroutine call and Return<br/>
+`call` instruction will push current code location onto stack.
+`ret` will pop the code location and perform an unconditional jump to it.
+
+```
+call HelloWorld
+ret
 ```
 
 ## Calling Conventions and Stack Frames
