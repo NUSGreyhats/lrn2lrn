@@ -115,8 +115,8 @@ There are two syntaxes of x86 Assembly:
 </tr>
 <tr>
 <td>Parameter Order</td>
-<td><operand> <src> <dst></td>
-<td><operand> <dst> <src></td>
+<td>\<operand\> \<src\> \<dst\></td>
+<td>\<operand\> \<dst\> \<src\></td>
 </tr>
   <tr>
     <td>Sigils</td>
