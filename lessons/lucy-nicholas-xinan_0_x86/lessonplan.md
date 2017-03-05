@@ -315,7 +315,7 @@ jle HelloWorld  -->  jump
 ```
 
 <b>call, ret</b> - Subroutine call and Return<br/>
-`call` instruction will push current code location onto stack.
+`call` instruction will push current code location onto stack.<br/>
 `ret` will pop the code location and perform an unconditional jump to it.
 
 ```
