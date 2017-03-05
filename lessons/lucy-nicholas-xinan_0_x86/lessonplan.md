@@ -165,7 +165,7 @@ mov 0x4(%eax), 0x8(%eax)
 Correct method:
 ```
 mov 0x4(%eax), %edx
-mov %edx, 0x8(%eax)
+mov %edx     , 0x8(%eax)
 ```
 
 <b>push</b> - Push stack<br/>
@@ -239,7 +239,7 @@ not instruction takes in only one operand. Flips all bit values in the operand.
 
 ```
 mov $0x4, %eax  -->  eax = 4
-not %eax        -->  eax = 4294967291 (-5)
+not %eax        -->  eax = 4,294,967,291 (-5 if signed)
 ```
 
 <b>neg</b> - Negate<br/>
@@ -247,7 +247,7 @@ Performs two’s complement negation on operand contents, which is essentially �
 
 ```
 mov $0x4, %eax  -->  eax = 4
-neg %eax        -->  eax = 4294967292 (-4)
+neg %eax        -->  eax = 4,294,967,292 (-4 if signed)
 ```
 
 <b>shl, shr</b> - Shift Left, Shift Right<br/>
@@ -256,7 +256,7 @@ Shift bits left and shift bits right.
 ```
 mov $0x4 , %eax  -->  eax = 4
 shl $0x1 , %eax  -->  eax = 8
-shl $0x1c, %eax  -->  eax = 2,147,483,648 (negative if signed)
+shl $0x1c, %eax  -->  eax = 2,147,483,648 (-2,147,483,648 if signed)
 sh1 $0x1 , %eax  -->  eax = 0
 
 mov $0x4,  %eax  -->  eax = 4
@@ -272,7 +272,7 @@ Causes the program to execute instruction at another memory address.
 
 ```
 HelloWorld: mov $0x4, %eax
-      jmp HelloWorld  --> Infinite loop, don’t do this.
+            jmp HelloWorld  --> Infinite loop, don’t do this.
 ```
 
 <b>cmp</b> - Compare<br/>
