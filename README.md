@@ -51,4 +51,4 @@ Feel free to add more topics you are interested in.
 
 [1]: ./lessons/amon_0_sample/lessonplan.md
 [2]: ./lessons/lucy-nicholas-xinan_0_x86/lessonplan.md
-[3]: ./lessons/fiona-yuxi_3_linux/README.md
+[3]: ./lessons/fiona-yuxi_3_linux/lessonplan.md
