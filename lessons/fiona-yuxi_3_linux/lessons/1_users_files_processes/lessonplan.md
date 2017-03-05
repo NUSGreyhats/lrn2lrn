@@ -1,4 +1,4 @@
-# Users, Groups and Files
+# Users, Files and Processes
 
 ## Superuser
 
@@ -13,7 +13,7 @@ as root.
 To switch to root, execute the following command:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ su
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ su
 ```
 
 It starts a new shell as the target user. If the account is locked,
@@ -60,19 +60,20 @@ The shell field indicates the initial login program.
 An example of the password file:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ cat /etc/passwd
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ cat /etc/passwd
 root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
 bin:x:2:2:bin:/bin:/usr/sbin/nologin
 sys:x:3:3:sys:/dev:/usr/sbin/nologin
 sync:x:4:65534:sync:/bin:/bin/sync
 ...
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$
 ```
 
 View the whole manual:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ man 5 passwd
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ man 5 passwd
 ```
 
 ## shadow file
@@ -92,7 +93,7 @@ may login by other means.
 An example of the shadow file:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ sudo cat /etc/shadow
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ sudo cat /etc/shadow
 root:!:17093:0:99999:7:::
 daemon:*:17001:0:99999:7:::
 bin:*:17001:0:99999:7:::
@@ -104,13 +105,13 @@ sync:*:17001:0:99999:7:::
 View the format of the encrpted password:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ man 3 crypt
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ man 3 crypt
 ```
 
 View the whole manual:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ man 5 passwd
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ man 5 passwd
 ```
 
 Let's try to crack the password for the user `alice`.
@@ -133,26 +134,26 @@ Windows and other OS.
 Install John the Ripper:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/files$ sudo apt-get install john
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/files$ sudo apt-get install john
 ```
 
 Combine the password file and the shadow file:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/files$ unshadow passwd shadow > mypasswd
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/files$ unshadow passwd shadow > mypasswd
 ```
 
 Run the tool:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/files$ john mypasswd
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/files$ john mypasswd
 Loaded 1 password hash (crypt, generic crypt(3) [?/64])
 Press 'q' or Ctrl-C to abort, almost any other key for status
 secret           (alice)
 1g 0:00:00:03 100% 2/3 0.2551g/s 239.5p/s 239.5c/s 239.5C/s 123456..pepper
 Use the "--show" option to display all of the cracked passwords reliably
 Session completed
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/files$
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/files$
 ```
 
 The password for `alice` is `secret`.
@@ -179,7 +180,7 @@ group_name:encrypted_password:GID:members_username
 An example of the group file:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ cat /etc/group
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ cat /etc/group
 root:x:0:
 daemon:x:1:
 bin:x:2:
@@ -191,7 +192,7 @@ adm:x:4:syslog,ubuntu
 View the whole manual:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ man 5 group
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ man 5 group
 ```
 
 ## Files
@@ -220,9 +221,9 @@ The subdirectories of the root directory includes:
 To print the (current) working directory:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ pwd
-/vagrant/lessons/1_users_groups_files
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ pwd
+/vagrant/lessons/1_users_files_processes
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$
 ```
 
 When a server requests for a file path to display the contents,
@@ -253,10 +254,10 @@ if __name__ == "__main__":
 Prints the following:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/script$ python filter.py
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/script$ python filter.py
 ....//....//a.out
 ../../a.out
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/script$
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/script$
 ```
 
 For the string:
@@ -279,6 +280,80 @@ intended directory, get the canonical path, a unique full file
 path with `../` and symbolic links resolved, and validate the
 path.
 
+## Processes
+
+Processes are running programs with a process ID (PID) and other
+information required for program execution. The parent process
+`init` with PID 1 spawns other processes.
+
+View the active processes:
+
+```shell
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ ps -aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.1  0.2 119584  5808 ?        Ss   07:18   0:01 /sbin/init splash
+root         2  0.0  0.0      0     0 ?        S    07:18   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S    07:18   0:00 [ksoftirqd/0]
+...
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$
+```
+
+Processes are spawned by using `fork()`, which creates a child
+process, and `exec()`, which replaces the current process image
+with a new process image.
+
+An [example][4] usage of `fork()` and `exec()`:
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+    int childPid;
+
+    childPid = fork();
+
+    if (childPid) {
+        printf("Parent process\n");
+    } else {
+        printf("Child process\n");
+        execl("/bin/ls", "ls", NULL);
+    }
+
+    return 0;
+}
+```
+
+The [binary][5] spawns a child process and the child process
+execute the command `ls`.
+
+```shell
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/build$ ./process
+/process 
+Parent process
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/build$ Child process
+ls  process
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/build$
+```
+
+An attacker may use a fork bomb to launch a DoS attack. A fork bomb is
+a process continuously replicating itself through an infinite loop to
+deplete available system resources.
+
+**CAUTION! DO NOT TRY THIS ON YOUR MACHINE!**
+
+The source code looks like this:
+
+```c
+#include <unistd.h>
+
+void main() {
+    while (1) {
+        fork();
+    }
+}
+```
+
 ## Environment Variables
 
 Environment variables can affect a process. As the name suggests, it
@@ -287,13 +362,13 @@ is a part of the environment of a process.
 View all environment variables:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ env
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ env
 ```
 
 or:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ printenv
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ printenv
 ```
 
 One of the most important environment variable is `PATH`. It specifies
@@ -305,13 +380,13 @@ directory specified and the program is executed.
 View the value of the `PATH` environment variable:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ printenv PATH
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ printenv PATH
 ```
 
 or:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ echo $PATH
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ echo $PATH
 ```
 
 An attacker may store a malicious program in a directory at the start
@@ -323,12 +398,12 @@ Let's try to masquerade as a `ls` command.
 Locate the full path of `ls`:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ which ls
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ which ls
 /bin/ls
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$
 ```
 
-Using a simple [binary][4] with the following [source code][5]:
+Using a simple [binary][6] with the following [source code][7]:
 
 ```c
 #include <stdio.h>
@@ -349,19 +424,19 @@ int main(int argc, char** argv) {
 Compile the binary:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ gcc -o ls ls.c
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ gcc -o ls ls.c
 ```
 
 Temporarily prepend the directory to the search path:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ PATH="/vagrant/lessons/1_users_groups_files/build:$PATH"
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ PATH="/vagrant/lessons/1_users_files_processes/build:$PATH"
 ```
 
 or permanently prepend the directory to the search path:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files$ export PATH=/vagrant/lessons/1_users_groups_files/build:$PATH
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes$ export PATH=/vagrant/lessons/1_users_files_processes/build:$PATH
 ```
 
 or store the binary in one of the directory in the search path
@@ -374,9 +449,9 @@ command the user wanted?
 Verify that the location of `ls` is the location of our binary:
 
 ```shell
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/build$ which ls
-/vagrant/lessons/1_users_groups_files/build/ls
-ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_groups_files/build$
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/build$ which ls
+/vagrant/lessons/1_users_files_processes/build/ls
+ubuntu@ubuntu-xenial:/vagrant/lessons/1_users_files_processes/build$
 ```
 
 To prevent the execution of another program instead of the system
@@ -387,5 +462,7 @@ such as Tripwire, that monitor the data integrity of files.
 [1]: ./files/passwd
 [2]: ./files/shadow
 [3]: ./script/filter.py
-[4]: ./build/ls
-[5]: ./src/ls.c
+[4]: ./src/process.c
+[5]: ./build/process
+[6]: ./build/ls
+[7]: ./src/ls.c
