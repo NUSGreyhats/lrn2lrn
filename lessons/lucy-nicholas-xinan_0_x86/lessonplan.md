@@ -239,7 +239,7 @@ not instruction takes in only one operand. Flips all bit values in the operand.
 
 ```
 mov $0x4, %eax  -->  eax = 4
-not %eax        -->  eax = 11
+not %eax        -->  eax = 4294967291 (-5)
 ```
 
 <b>neg</b> - Negate<br/>
@@ -247,7 +247,7 @@ Performs twoâ€™s complement negation on operand contents, which is essentially â
 
 ```
 mov $0x4, %eax  -->  eax = 4
-neg %eax        -->  eax = 12
+neg %eax        -->  eax = 4294967292 (-4)
 ```
 
 <b>shl, shr</b> - Shift Left, Shift Right<br/>
