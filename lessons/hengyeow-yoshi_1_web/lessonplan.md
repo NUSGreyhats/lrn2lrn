@@ -76,7 +76,7 @@ DELETE |	Deletes the specified resource
 OPTIONS	| Returns the HTTP methods that the server supports
 CONNECT	| Converts the request connection to a transparent TCP/IP tunnel
 
-### Cookies
+## Cookies
 
 Cookies are a key part of the HTTP protocol that most web applications use. They are often used in exploiting vulnerabilities. The cookie mechanism enables the server to send items of data to the client, which the client stores and resubmits to the server. 
 
@@ -124,3 +124,13 @@ Layer (SSL). This protects the privacy and integrity of data passing over the ne
 SSL is an excellent technology that protects the confidentiality and integrity of data in transit between the user’s browser and the web server. However, it does not stop attacks that directly target the server or client components of an application.
 
 ## Encoding Schemes
+
+Web applications employ several different encoding schemes for their data.
+
+### URL Encoding
+
+URLs are permitted to contain only the printable characters in the US-ASCII character set — that is, those whose ASCII code is in the range 0x20 to 0x7e, inclusive.
+
+The URL-encoding scheme is used to encode any problematic characters within the extended ASCII character set so that they can be safely transported over HTTP. The URL-encoded form of any character is the % prefi x followed by the character’s two-digit ASCII code expressed in hexadecimal. You can find a reference list of URL encoding here: https://www.w3schools.com/tags/ref_urlencode.asp.
+
+
