@@ -78,11 +78,11 @@ CONNECT	| Converts the request connection to a transparent TCP/IP tunnel
 
 Cookies are a key part of the HTTP protocol that most web applications use. They are often used in exploiting vulnerabilities. The cookie mechanism enables the server to send items of data to the client, which the client stores and resubmits to the server. 
 
-Unlike the other types of request parameters (those within the URL query string or the message body), cookiescontinue to be resubmitted in each subsequent request without any particular action required by the application or the user.
+Unlike the other types of request parameters (those within the URL query string or the message body), cookies continue to be resubmitted in each subsequent request without any particular action required by the application or the user.
 
 ![] (http://niyuj.com/wp-content/uploads/2016/05/C2GNfi.png)
 
-A server issues a cookie using the Set-Cookie response header as shown below:
+A server issues a cookie using the `Set-Cookie` response header as shown below:
 
 `Set-Cookie: tracking=tI8rk7joMx44S2Uu85nSWc`
 
@@ -90,8 +90,8 @@ The user’s browser then automatically adds the following header to subsequent 
 
 `Cookie: tracking=tI8rk7joMx44S2Uu85nSWc`
 
-Cookies normally consist of a name/value pair, as shown, but they may consist of any string that does not contain a space. Multiple cookies can be issued by using multiple Set-Cookie headers in the server’s response. These are submitted back to the server in the same Cookie header, with a semicolon separating different individual cookies.
+Cookies normally consist of a name/value pair, as shown, but they may consist of any string that does not contain a space. Multiple cookies can be issued by using multiple `Set-Cookie` headers in the server’s response. These are submitted back to the server in the same Cookie header, with a semicolon separating different individual cookies.
 
-In addition to the cookie’s actual value, the Set-Cookie header can include any of the following optional attributes, which can be used to control how the browser handles the cookie:
+In addition to the cookie’s actual value, the `Set-Cookie` header can include any of the following optional attributes, which can be used to control how the browser handles the cookie.
 
 ## Encoding Schemes
