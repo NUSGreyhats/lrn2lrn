@@ -92,6 +92,14 @@ The user’s browser then automatically adds the following header to subsequent 
 
 Cookies normally consist of a name/value pair, as shown, but they may consist of any string that does not contain a space. Multiple cookies can be issued by using multiple `Set-Cookie` headers in the server’s response. These are submitted back to the server in the same Cookie header, with a semicolon separating different individual cookies.
 
-In addition to the cookie’s actual value, the `Set-Cookie` header can include any of the following optional attributes, which can be used to control how the browser handles the cookie.
+In addition to the cookie’s actual value, the `Set-Cookie` header can include any of the following optional attributes, which can be used to control how the browser handles the cookie:
+
+ | Description
+--- | ---
+expires | sets a date until which the cookie is valid. If this attribute is not set, the cookie is used only in the current browser session.
+domain | specifies the domain for which the cookie is valid. This must be the same or a parent of the domain from which the cookie is received.
+path | specifies the URL path for which the cookie is valid.
+secure | If this attribute is set, the cookie will be submitted only in HTTPS requests.
+Http Only | If this attribute is set, the cookie cannot be directly accessed via client-side JavaScript.
 
 ## Encoding Schemes
