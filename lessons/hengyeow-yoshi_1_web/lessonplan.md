@@ -32,6 +32,32 @@ Set-Cookie header | Issues the browser a further cookie. This cookie is submitte
 Pragma header | Instructs the browser not to store the response in its cache. 
 Content-Type and Content-Length header | Indicates that the body of this message (in this case an HTML document) and the length of the message body in bytes.
 
-### URLs & HTTP Methods
+### URLs
+
+A uniform resource locator (URL) is a unique identifier for a web resource where resource can be retrieved. The format of most URLs is as follows:
+
+`protocol://hostname[:port]/[path/]file[?param=value]`
+
+Note that [?param=value] refers to the query string of the URL. A query string is the part of an URL containing data that does not fit into a hierarchical path structure. The query string commonly includes fields added to a base URL by a Web browser or other client application.
+
+### HTTP Methods
+
+The most commonly used HTTP methods for a request-response between a client and server are are `GET` and `POST`. 
+
+#### The GET Method
+
+The GET method is used to request data from a specified resource. The query string (name/value pairs) is sent in the URL of a GET request:
+
+`/test/demo_form.php?name1=value1&name2=value2`
+
+#### The POST Method 
+
+The POST method is used to submit data to be processed to a specified resource. The query string (name/value pairs) is sent in the HTTP message body of a POST request:
+
+`POST /test/demo_form.php`
+
+`HTTP/1.1 Host: w3schools.com`
+
+`name1=value1&name2=value2`
 
 ## Encoding Schemes
