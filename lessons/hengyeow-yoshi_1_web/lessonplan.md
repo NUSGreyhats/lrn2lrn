@@ -133,4 +133,7 @@ URLs are permitted to contain only the printable characters in the US-ASCII char
 
 The URL-encoding scheme is used to encode any problematic characters within the extended ASCII character set so that they can be safely transported over HTTP. The URL-encoded form of any character is the % prefi x followed by the character’s two-digit ASCII code expressed in hexadecimal. You can find a reference list of URL encoding here: https://www.w3schools.com/tags/ref_urlencode.asp.
 
+### Unicode Encoding
+
+
 
