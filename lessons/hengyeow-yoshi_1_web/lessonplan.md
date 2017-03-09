@@ -11,7 +11,7 @@
 The Hypertext transfer protocol (HTTP) is a common protocol used to access the World Wide Web and used by web applications. HTTP uses a message-based model in which a client sends a request message and the server returns a response message.
 
 ### HTTP Requests
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Request.PNG )
+![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20requests.png)
 
  | Description 
 --- | --- 
@@ -22,7 +22,7 @@ Host header | Specifies hostname that appeared in full URL being accessed.
 Cookie header | Used to submit additional parameters that server issued to the client.
 
 ### HTTP Responses
-![alt text] ( https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Response.PNG )
+![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Response.PNG)
 
  | Description 
 --- | --- 
