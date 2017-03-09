@@ -5,7 +5,8 @@
 1. [Encoding Schemes] (#encoding-schemes)
 
 ## HTTP Protocol
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20protocol.png )
+<!-- #![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20protocol.png ) -->
+![] (https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP.png)
 ### HTTP Requests
 ![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Request.PNG )
 
@@ -16,5 +17,6 @@ Referer header | Shows the URL where the requested originated from (i.e. the use
 User-Agent header | Provides information about the browser or other client software that generated the request.
 Host header | Specifies hostname that appeared in full URL being accessed.  
 Cookie header | Used to submit additional parameters that server issued to the client.
+
 
 ## Encoding Schemes
