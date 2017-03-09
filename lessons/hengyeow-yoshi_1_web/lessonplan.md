@@ -22,7 +22,7 @@ Host header | Specifies hostname that appeared in full URL being accessed.
 Cookie header | Used to submit additional parameters that server issued to the client.
 
 ### HTTP Responses
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Response.PNG)
+![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/Http%20Response.PNG)
 
  | Description 
 --- | --- 
@@ -31,5 +31,7 @@ Server header | Indicates the web server software/installed modules/server opera
 Set-Cookie header | Issues the browser a further cookie. This cookie is submitted back in the Cookie header of subsequent requests to this server.
 Pragma header | Instructs the browser not to store the response in its cache. 
 Content-Type and Content-Length header | Indicates that the body of this message (in this case an HTML document) and the length of the message body in bytes.
+
+### URLs & HTTP Methods
 
 ## Encoding Schemes
