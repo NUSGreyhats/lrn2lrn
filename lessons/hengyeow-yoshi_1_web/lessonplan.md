@@ -22,7 +22,7 @@ Host header | Specifies hostname that appeared in full URL being accessed.
 Cookie header | Used to submit additional parameters that server issued to the client.
 
 ### HTTP Responses
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20responses.PNG)
+![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20responses.png)
 
  | Description 
 --- | --- 
