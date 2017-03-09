@@ -2,7 +2,7 @@
 
 ## Table of Contents
 0. [HTTP Protocol] (#http-protocol)
-1. [URLs/HTTP Methods] (#urls-http methods)
+1. [URLs and HTTP Methods] (#urls-and-http-methods)
 2. [Encoding Schemes] (#encoding-schemes)
 
 ## HTTP Protocol
@@ -33,7 +33,7 @@ Set-Cookie header | Issues the browser a further cookie. This cookie is submitte
 Pragma header | Instructs the browser not to store the response in its cache. 
 Content-Type and Content-Length header | Indicates that the body of this message (in this case an HTML document) and the length of the message body in bytes.
 
-## URLs/HTTP Methods
+## URLs and HTTP Methods
 
 ### URLs
 
