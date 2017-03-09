@@ -131,9 +131,40 @@ Web applications employ several different encoding schemes for their data.
 
 URLs are permitted to contain only the printable characters in the US-ASCII character set — that is, those whose ASCII code is in the range 0x20 to 0x7e, inclusive.
 
-The URL-encoding scheme is used to encode any problematic characters within the extended ASCII character set so that they can be safely transported over HTTP. The URL-encoded form of any character is the % prefi x followed by the character’s two-digit ASCII code expressed in hexadecimal. You can find a reference list of URL encoding here: https://www.w3schools.com/tags/ref_urlencode.asp.
+The URL-encoding scheme is used to encode any problematic characters within the extended ASCII character set so that they can be safely transported over HTTP. The URL-encoded form of any character is the % prefix followed by the character’s two-digit ASCII code expressed in hexadecimal. You can find a reference list of URL encoding here: https://www.w3schools.com/tags/ref_urlencode.asp.
 
 ### Unicode Encoding
+
+Unicode is a character encoding standard that is designed to support all of the world’s writing systems. In this case, we are interested in the UTF-8 encoding as it is what most websites use. UTF-8 is a variable-length encoding standard that employs one or more bytes to express each character. Detailed explanation of UTF-8 encoding can be found here: https://www.youtube.com/watch?v=vLBtrd9Ar28
+
+For transmission over HTTP, the UTF-8-encoded form of a multibyte character simply uses each byte expressed in hexadecimal and
+preceded by the % prefix:
+
+E.g.
+`%c2%a9 — ©`
+
+### HTML Encoding 
+
+HTML encoding is used to represent problematic characters so that they can be safely incorporated into an HTML document. Various characters have special meaning as metacharacters within HTML and are used to define a document’s structure rather than its content. To use these characters safely as part of the document’s content, it is necessary to HTML encode them.
+
+Here is a quick reference to the HTML Symbol Entity Codes: http://www.entitycode.com/#direction-content
+
+### Base64 Encoding
+
+Base64 encoding allows any binary data to be safely represented using only printable ASCII characters. It is used for example to encode user credentials in basic HTTP authentication. Base64 encoding employs the following character set, which contains only printable ASCII characters:
+
+`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/`
+
+If the final block of input data results in fewer than three chunks of outputdata, the output is padded with one or two `=` characters:
+
+`SW50cm9kdWN0aW9uIHRvIFdlYiBTZWN1cml0eQ==`
+
+### Hex Encoding
+
+Many applications use straightforward hexadecimal encoding when transmitting binary data, using ASCII characters to represent the hexadecimal block. For example, hex-encoding the username `test` within a cookie would result in this:
+
+`74657374`
+
 
 
 
