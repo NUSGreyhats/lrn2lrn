@@ -11,10 +11,8 @@
 
 The first line of every HTTP request consists of three items, separated by spaces:
 
-1) The HTTP method
-
-2) The requested URL
-
-3) The HTTP Version
+1. The HTTP method
+2. The requested URL
+3. The HTTP Version
 
 ## Encoding Schemes
