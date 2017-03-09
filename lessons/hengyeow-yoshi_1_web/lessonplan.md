@@ -60,4 +60,14 @@ The POST method is used to submit data to be processed to a specified resource. 
 
 `name1=value1&name2=value2`
 
+#### Other HTTP Methods
+
+Method |	Description
+--- | ---
+HEAD	 | Same as GET but returns only HTTP headers and no document body
+PUT	 | Uploads a representation of the specified URI
+DELETE |	Deletes the specified resource
+OPTIONS	| Returns the HTTP methods that the server supports
+CONNECT	| Converts the request connection to a transparent TCP/IP tunnel
+
 ## Encoding Schemes
