@@ -4,7 +4,9 @@
 0. [HTTP Protocol] (#http-protocol)
 1. [URLs and HTTP Methods] (#urls-and-http-methods)
 2. [Cookies] (#cookies)
-3. [Encoding Schemes] (#encoding-schemes)
+3. [Status Codes] (#status-codes)
+4. [HTTPS Protocol] (#https-protocol)
+5. [Encoding Schemes] (#encoding-schemes)
 
 ## HTTP Protocol
 <!-- #![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20protocol.png ) -->
@@ -101,5 +103,24 @@ domain | specifies the domain for which the cookie is valid. This must be the sa
 path | specifies the URL path for which the cookie is valid.
 secure | If this attribute is set, the cookie will be submitted only in HTTPS requests.
 Http Only | If this attribute is set, the cookie cannot be directly accessed via client-side JavaScript.
+
+## Status Codes
+Each HTTP response message must contain a status code in its first line, indicating the result of the request. The status codes fall into five groups, according to the code’s first digit:
+
+1. 1xx — Informational.
+2. 2xx — The request was successful.
+3. 3xx — The client is redirected to a different resource.
+4. 4xx — The request contains an error of some kind.
+5. 5xx — The server encountered an error fulfi lling the request.
+
+There are numerous specific status codes, many of which are used only in specialized circumstances. Here are the status codes you are most likely to encounter when attacking a web application, along with the usual reason phrase associated with them: http://www.restapitutorial.com/httpstatuscodes.html
+
+## HTTPS Protocol
+The HTTP protocol uses plain TCP as its transport mechanism, which is unencrypted and therefore can be intercepted by an attacker who is suitably positioned on the network.
+
+HTTPS is essentially the same application-layer protocol as HTTP but is tunneled over the secure transport mechanism, Secure Sockets
+Layer (SSL). This protects the privacy and integrity of data passing over the network, reducing the possibilities for noninvasive interception attacks. HTTP requests and responses function in exactly the same way regardless of whether SSL is used for transport.
+
+SSL is an excellent technology that protects the confidentiality and integrity of data in transit between the user’s browser and the web server. However, it does not stop attacks that directly target the server or client components of an application.
 
 ## Encoding Schemes
