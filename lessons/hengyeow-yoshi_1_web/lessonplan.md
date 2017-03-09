@@ -2,7 +2,8 @@
 
 ## Table of Contents
 0. [HTTP Protocol] (#http-protocol)
-1. [Encoding Schemes] (#encoding-schemes)
+1. [URLs/HTTP Methods] (#urls-http methods)
+2. [Encoding Schemes] (#encoding-schemes)
 
 ## HTTP Protocol
 <!-- #![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20protocol.png ) -->
@@ -31,6 +32,8 @@ Server header | Indicates the web server software/installed modules/server opera
 Set-Cookie header | Issues the browser a further cookie. This cookie is submitted back in the Cookie header of subsequent requests to this server.
 Pragma header | Instructs the browser not to store the response in its cache. 
 Content-Type and Content-Length header | Indicates that the body of this message (in this case an HTML document) and the length of the message body in bytes.
+
+## URLs/HTTP Methods
 
 ### URLs
 
