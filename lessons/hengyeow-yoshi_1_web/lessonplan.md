@@ -12,6 +12,7 @@ The Hypertext transfer protocol (HTTP) is a common protocol used to access the W
 
 ### HTTP Requests
 ![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Request.PNG )
+
  | Description 
 --- | --- 
 First line of HTTP request separated by spaces | <ul><li>1. The HTTP method </li><li>2. The requested URL </li><li>3. The HTTP Version</li></ul>
@@ -22,13 +23,13 @@ Cookie header | Used to submit additional parameters that server issued to the c
 
 ### HTTP Responses
 ![alt text] ( https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/HTTP%20Response.PNG )
+
  | Description 
 --- | --- 
 First line of HTTP response separated by spaces | <ul><li>1. The HTTP Version </li><li>2. A numeric status code indicating the result of the request. </li></ul>
 Server header | Indicates the web server software/installed modules/server operating system.
 Set-Cookie header | Issues the browser a further cookie. This cookie is submitted back in the Cookie header of subsequent requests to this server.
 Pragma header | Instructs the browser not to store the response in its cache. 
-Content-Type and Content-Length header | Indicates that the body
-of this message (in this case an HTML document) and the length of the message body in bytes.
+Content-Type and Content-Length header | Indicates that the body of this message (in this case an HTML document) and the length of the message body in bytes.
 
 ## Encoding Schemes
