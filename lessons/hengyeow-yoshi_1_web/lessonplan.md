@@ -7,6 +7,7 @@
 3. [Status Codes] (#status-codes)
 4. [HTTPS Protocol] (#https-protocol)
 5. [Encoding Schemes] (#encoding-schemes)
+6. [Resources] (#resources)
 
 ## HTTP Protocol
 <!-- #![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20protocol.png ) -->
@@ -165,6 +166,13 @@ Many applications use straightforward hexadecimal encoding when transmitting bin
 
 `74657374`
 
+## Resources
+
+1. The Web Application Hacker's Handbook: Finding and Exploiting Security Flaws, 2nd Edition
+2. [Basic concepts of web applications, how they work and the HTTP protocol] (https://www.youtube.com/watch?v=RsQ1tFLwldY)
+3. [HTTP Methods: GET vs. POST] (https://www.w3schools.com/tags/ref_httpmethods.asp)
+4. [Query string] (https://en.wikipedia.org/wiki/Query_string)
+5. [Character encodings for beginners] (https://www.w3.org/International/questions/qa-what-is-encoding)
 
 
 
