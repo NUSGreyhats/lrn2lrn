@@ -2,7 +2,8 @@
 
 ## Table of Contents
 0. [Server-Side and Client-Side Functionality] (#server-side-and-client-side-functionality)
-1. [Resources] (#resources)
+1. [Example of modifying HTTP Headers] (#example-of-modifying-http-headers)
+2. [Resources] (#resources)
 
 ## Server-Side and Client-Side Functionality 
 
@@ -33,31 +34,32 @@ JavaScript | Programming language that is used to extend web interfaces in which
 ### Example of Server and Client Interaction
 ![] (https://i2.wp.com/wpshout.com/media/2014/08/client_server.png?w=1440&ssl=1)
 
-### Example of modifying HTTP Requests
+## Example of modifying HTTP Headers
 
 In this example, we would be introducing `curl`, a tool used to transfer data to or from a user without user interaction. On your linux machine, install curl if you haven't already done so:
 
 `sudo apt-get install curl`
 
-As discussed earlier, each line of a HTTP request contains headers. In this example, we would be looking at the `Referer` header. Browsers include the `Referer` header within most HTTP requests. It is used to indicate the URL of the page from which the current request originated. Hence, it can be leveraged as a mechanism for transmitting data via the client.
+As discussed earlier, each line of a HTTP request contains headers. In the following exercise, we would be looking at the `Referer` header. Browsers include the `Referer` header within most HTTP requests. It is used to indicate the URL of the page from which the current request originated. Hence, it can be leveraged as a mechanism for transmitting data via the client.
 
-### Exercise 1
+#### Exercise 1
 
 Connect to `http://natas4.natas.labs.overthewire.org` with the following credentials `natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ`.
 
 After clicking on `Refresh Page`, you are displayed with the following message:
+
 `Access disallowed. You are visiting from "http://natas4.natas.labs.overthewire.org/index.php" while authorized users should come only from "http://natas5.natas.labs.overthewire.org/" `
 
-The message gave as a clue that if we are referred from "http://natas5.natas.labs.overthewire.org/", perhaps we might be allowed access.
+The message gave as a clue that if we are referred from "http://natas5.natas.labs.overthewire.org/", we might be allowed access.
 
 Let us try to edit the referer header of the HTTP request so that we are referred from "http://natas5.natas.labs.overthewire.org/". The command looks like this.
 
 `curl -u natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ --referer "http://natas5.natas.labs.overthewire.org/"`
 
-#### Why?
+##### Why?
 Because the user controls every aspect of every request, including the HTTP headers, they can easily change the value of the `Referer` header to the value that the application requires.
 
-### Exercise 2
+#### Exercise 2
 
 Connect to `http://natas5.natas.labs.overthewire.org` with the the username natas5 and the password you have just obtained.
 
@@ -81,4 +83,4 @@ This further shows that the client can easily change HTTP headers to bypass cont
 ## Resources
 1. The Web Application Hacker's Handbook: Finding and Exploiting Security Flaws, 2nd Edition
 2. [Understanding “Server-Side” and “Client-Side” in WordPress] (https://wpshout.com/understanding-server-side-client-side-wordpress/)
-3. [Overthewire] (http://overthewire.org/wargames/natas/)
+3. [OverTheWire] (http://overthewire.org/wargames/natas/)
