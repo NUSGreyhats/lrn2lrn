@@ -33,8 +33,52 @@ JavaScript | Programming language that is used to extend web interfaces in which
 ### Example of Server and Client Interaction
 ![] (https://i2.wp.com/wpshout.com/media/2014/08/client_server.png?w=1440&ssl=1)
 
-### 
+### Example of modifying HTTP Requests
+
+In this example, we would be introducing `curl`, a tool used to transfer data to or from a user without user interaction. On your linux machine, install curl if you haven't already done so:
+
+`sudo apt-get install curl`
+
+As discussed earlier, each line of a HTTP request contains headers. In this example, we would be looking at the `Referer` header. Browsers include the `Referer` header within most HTTP requests. It is used to indicate the URL of the page from which the current request originated. Hence, it can be leveraged as a mechanism for transmitting data via the client.
+
+### Exercise 1
+
+Connect to `http://natas4.natas.labs.overthewire.org` with the following credentials `natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ`.
+
+After clicking on `Refresh Page`, you are displayed with the following message:
+`Access disallowed. You are visiting from "http://natas4.natas.labs.overthewire.org/index.php" while authorized users should come only from "http://natas5.natas.labs.overthewire.org/" `
+
+The message gave as a clue that if we are referred from "http://natas5.natas.labs.overthewire.org/", perhaps we might be allowed access.
+
+Let us try to edit the referer header of the HTTP request so that we are referred from "http://natas5.natas.labs.overthewire.org/". The command looks like this.
+
+`curl -u natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ --referer "http://natas5.natas.labs.overthewire.org/"`
+
+#### Why?
+Because the user controls every aspect of every request, including the HTTP headers, they can easily change the value of the `Referer` header to the value that the application requires.
+
+### Exercise 2
+
+Connect to `http://natas5.natas.labs.overthewire.org` with the the username natas5 and the password you have just obtained.
+
+You are presented with the following message:
+
+`Access disallowed. You are not logged in`
+
+After looking at the page source, nothing seems interesting. Let us look at the HTTP Request/Response. There are 2 ways to go about this.
+
+1. Right click > Inspect > Network > Click on your target of interest and look at the Headers Tab
+2. `curl -v -u natas5:iX6IOfmpN7AYOQGPwtn3fXpbaJVJcHfq http://natas5.natas.labs.overthewire.org` 
+
+Note that curl -v shows the HTTP request starting with `>` and HTTP response starting with `<`.
+
+Looking at the `Set-Cookie` header, it shows `Set-Cookie: loggedin=0`. What if we change the cookie value to `1`? The command using `curl` looks like this:
+
+`curl -u natas5:iX6IOfmpN7AYOQGPwtn3fXpbaJVJcHfq http://natas5.natas.labs.overthewire.org --cookie loggedin=1`
+
+This further shows that the client can easily change HTTP headers to bypass controls.
 
 ## Resources
 1. The Web Application Hacker's Handbook: Finding and Exploiting Security Flaws, 2nd Edition
 2. [Understanding “Server-Side” and “Client-Side” in WordPress] (https://wpshout.com/understanding-server-side-client-side-wordpress/)
+3. [Overthewire] (http://overthewire.org/wargames/natas/)
