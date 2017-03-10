@@ -33,6 +33,8 @@ JavaScript | Programming language that is used to extend web interfaces in which
 ### Example of Server and Client Interaction
 ![] (https://i2.wp.com/wpshout.com/media/2014/08/client_server.png?w=1440&ssl=1)
 
+### 
+
 ## Resources
 1. The Web Application Hacker's Handbook: Finding and Exploiting Security Flaws, 2nd Edition
 2. [Understanding “Server-Side” and “Client-Side” in WordPress] (https://wpshout.com/understanding-server-side-client-side-wordpress/)
