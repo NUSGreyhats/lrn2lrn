@@ -3,7 +3,8 @@
 ## Table of Contents
 0. [Server-Side and Client-Side Functionality] (#server-side-and-client-side-functionality)
 1. [Example of modifying HTTP Headers] (#example-of-modifying-http-headers)
-2. [Resources] (#resources)
+2. [Introduction to Client-Side Authentication with Javascript] (#introduction-to-client-side-authentication-with-javascript)
+3. [Resources] (#resources)
 
 ## Server-Side and Client-Side Functionality 
 
@@ -80,7 +81,30 @@ Looking at the `Set-Cookie` header, it shows `Set-Cookie: loggedin=0`. What if w
 
 This further shows that the client can easily change HTTP headers to bypass controls.
 
+## Introduction to Client-Side Authentication with Javascript
+
+Client-side authentication is when authentication checks are performed completely at users’ side. The idea is that the authentication procedures, methods, or codes are delivered to the client, where they are executed to determine whether a user has access. 
+
+### Exercise 1
+
+Connect to `https://net-force.nl/challenge/level101/`. Upon clicking on `Secret Webpage`, we are prompted to key in the correct credentials. However, we cannot view the page source of `secret.html`, a handy trick would be to prepend `view-source:` to the start of the url. The page source shows us the password.
+
+### Exercise 2
+
+Connect to `https://net-force.nl/challenge/level102/`. Upon viewing the page source, it shows the JavaScript function that tests your input for the password. Our interest lies in the javascript function:
+
+![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/javascript%20example.png)
+
+It seems that the script is checking the user input with a generated password (the steps are shown in the function).
+
+We can use an [online javascript compiler] (http://js.do/) and tweak the javascript to show us what the generated password of the javascript is. Note that adding `alert(password)` shows us the output of the password variable.
+
+![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/javascript%20compiler.png)
+
+
 ## Resources
 1. The Web Application Hacker's Handbook: Finding and Exploiting Security Flaws, 2nd Edition
 2. [Understanding “Server-Side” and “Client-Side” in WordPress] (https://wpshout.com/understanding-server-side-client-side-wordpress/)
 3. [OverTheWire] (http://overthewire.org/wargames/natas/)
+4. [NetForce Challenges] (https://net-force.nl/challenges/)
+5. [Pitfalls of Client-Side Authentication] (http://resources.infosecinstitute.com/the-pitfalls-of-client-side-authentication-solutions-to-net-force-javascript-ctf-challenges/#gref)
