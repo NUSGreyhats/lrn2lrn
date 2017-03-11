@@ -55,7 +55,7 @@ The message gave as a clue that if we are referred from "http://natas5.natas.lab
 
 Let us try to edit the referer header of the HTTP request so that we are referred from "http://natas5.natas.labs.overthewire.org/". The command looks like this.
 
-`curl -u natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ --referer "http://natas5.natas.labs.overthewire.org/"`
+`curl -u natas4:Z9tkRkWmpt9Qr7XrR5jWRkgOU901swEZ "http://natas4.natas.labs.overthewire.org" --referer "http://natas5.natas.labs.overthewire.org/"`
 
 ##### Why?
 Because the user controls every aspect of every request, including the HTTP headers, they can easily change the value of the `Referer` header to the value that the application requires.
