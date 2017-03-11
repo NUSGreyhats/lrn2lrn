@@ -6,8 +6,7 @@
 3. Windows Command Prompt
 4. Windows Powershell
 5. Registry
-6. Some Protection Mechanisms
-	ASLR
+6. Windows Protection Mechanisms
 7. Getting
 
 
@@ -156,3 +155,68 @@ Again, this is just a very small program and there are many other methods / func
 
 
 ### 4. Windows Powershell
+
+
+### 6. Windows Protection Mechanisms
+Due to how common buffer overflow attacks might come to one's mind, Microsoft has built in some mitatigation techniques into Windows that help protect memory manipulation by adversaries.
+
+<u>Data Execution Prevention (DEP)</u>
+Typically, an attacker might attempt to store malicious code in an area of memory not intended for it. Attackers then subsequently modify the eip of a program vulnerable to buffer overflow to point to the malicious code:
+```
+		  Some  Memory         Program Execution Stack
+          ------------              ------------
+0xBABEBABE| BAD CODE |              |   ....   |
+          ------------              ------------
+             ......          eip -> |0xBABEBABE|
+		  ------------              ------------
+0xBABEBEEF| BAD CODE |              |   ....   |
+		  ------------              ------------
+```
+DEP simply marks these regions of memory as non-executable. Therefore, even if `BAD CODE` exists, it cannot be executed, nullifying the damage caused by a buffer overflow.
+
+<u>Address Space Layout Randomization (ASLR)</u>
+Traditionally, core processes are assigned to predictable memory regions upon system startup. This implies that an attacker can targe specific core processes as and when they are vulnerable.
+
+```
+      Target Program Stack           After ASLR
+          ------------              ------------
+0x12345678|   VULN   |        0x??? |   ....   |
+          ------------              ------------
+             ......                 |   ....   |
+		  ------------              ------------
+0x12ABCDEF|   VULN   |        0x??? |   ....   |
+		  ------------              ------------
+```
+In the above example, we could hypothetically modify bytes located from 0x12345678 to 0x123ABCDEF in some manner that grants code execution to the attacker since we known its memory.
+
+However, ASLR will just randomize all these memory locations, making it difficult for an attacker to guess the location of a given targeted process. Therefore, arbitrary code execution becomes less reliable for an adversary.
+
+<u>Structured Exception Handler Overwrite Protection (SEHOP)</u>
+Exceptions are anomalous conditions requiring special processing that disrupts program flow execution. In Windows, a dispatcher is responsible for exceptions, and stores them in a linked list of exception registration records:
+
+```c++
+typedef struct _EXCEPTION_REGISTRATION_RECORD {
+   struct _EXCEPTION_REGISTRATION_RECORD *Next;
+   PEXCEPTION_ROUTINE                     Handler;
+} EXCEPTION_REGISTRATION_RECORD, *PEXCEPTION_REGISTRATION_RECORD;
+
+```
+
+By corrupting the `Next` Pointer or the `Handler` routine, we are able to execute code that should not be executed by simply raising an exception (e.g. overwrite return address on the stack).
+
+```
+      -------   Next   -------    Next     -------  
+	  | EX1 |  ----->  | EX2 | -----XXXXX> | EX3 |
+	  -------		   -------     |       -------
+                                   |
+	  Change Next Pointer of EX2   |       -------
+	  to point to BADEX instead	   |------>|BADEX|
+								           -------
+
+```
+
+Many other mitigation techniques (e.g. [Heap Protection](https://blogs.technet.microsoft.com/srd/2009/08/04/preventing-the-exploitation-of-user-mode-heap-corruption-vulnerabilities/)) has also been implemented. Do feel free to find out more (Microsoft technet isn't a bad place to start)
+
+## The End
+
+Thanks for reading through this whole document! :)
