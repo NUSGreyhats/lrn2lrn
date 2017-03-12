@@ -44,7 +44,7 @@ The file allocation table (FAT) system uses a static index table to store an ent
 
 ```
 INDEX IN FAT   01  02  03  04  05  06  07  08  09   10  11  12  13  14  15
-ENTRY IN FAT   14  01  RES 08  12  11  EOF 05  FREE RES 14  02  RES 07  FREE
+ENTRY IN FAT   14  01  EOF 08  12  11  03 05  FREE RES 14  02  RES 07  FREE
 DATA (CLUSTER) 'A' 'H' 'C' 'G' 'E' 'B' 'S' 'R' 'P'  'Q' '1' 'Y' '3' 'T' '!'
 
 ```
