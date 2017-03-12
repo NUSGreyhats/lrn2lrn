@@ -130,7 +130,7 @@ Normally the pentesting tools we use are typically installed on a Linux system. 
 #### 2.2 .Net Framework
 The .Net Framework is used on Windows. It introduces the Framework Class Library (FCL) and language interoperability across several programming languages (e.g. VB.net, C# ...) In fact we can have a program that is as follows:
 
-![DotNetDecompilerDemo](/img/dotnet.png)
+![DotNetDecompilerDemo](img/dotnet.png)
 
 This program can be obtained [here](bin/dotnet.exe) and is written in C#. **Exercise**: try to get yourself validated!
 
