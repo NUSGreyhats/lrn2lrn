@@ -1,16 +1,108 @@
 # Introduction to Windows
 
 ## Table of Contents
-1. Windows Basics
+1. Windows and Associated Filesystems
+	1.1 Windows Basics(?)
+	1.2 File Allocation Table (FAT)
+	1.3 New Technology File System (NTFS)
+	1.4 Resilient File System (ReFS)
 2. Additional Windows Tools
 3. Windows Command Prompt
+	3.1 Useful Commands
+	3.2 Basic Batch File Scripting
 4. Windows Powershell
-5. Registry
+5. Windows Registry
 6. Communicating with Windows
+	6.1 A Possible Method
+	6.2 Powercat
+	6.3 Telnet
 7. Windows Protection Mechanisms
+	7.1 DEP
+	7.2 ASLR
+	7.3 SEHOP
+
+### 0. Foreword
+This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document
+
+### 1. Windows and Associated Filesystems
+
+#### 1.1 Windows Basics(?)
+Welome to Microsoft Windows. Maybe here's some interesting stuff about it
+
+Enabling **GodMode** - Simply create a folder (e.g. on the Desktop) and name it as "GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" in order to access the many features you can customize graphically on Windows (largely similar to Control Panel).
+
+Enabling **Bash Shell** - If you can't stand CMD/Powershell, you can enable the "Windows subsystem for Linux (Beta)" option in "Turn Windows Features on/off" too
+
+About **Telemtry** - Microsoft collects data from its users. One of the typical ways to go about disabling it is to go the the Group Policy Editor `gpedit.msc` and set the value of "AllowTelemetry" to 0 (i.e. Don't collect). However, it is always important to read the fine print:
+
+![](img/telemetry-gpedit.png)
+
+In essence, Microsoft still collect data from the typical PC user because 0 is like 1 :P
+
+#### 1.2 FAT12/FAT16/FAT32/exFAT
+The file allocation table (FAT) system uses a static index table to store an entry for each cluster (indexed), which indicates the entry of the next cluster in the file, EOF, unused disk space and reserved disk space. It can be briefly modelled using the following diagram:
+
+```
+INDEX IN FAT   01  02  03  04  05  06  07  08  09   10  11  12  13  14  15
+ENTRY IN FAT   14  01  RES 08  12  11  EOF 05  FREE RES 14  02  RES 07  FREE
+DATA (CLUSTER) 'A' 'H' 'C' 'G' 'E' 'B' 'S' 'R' 'P'  'Q' '1' 'Y' '3' 'T' '!'
+
+```
+Therefore, if we try to check the data starting at index 04, we get "GREYHATS" by following the "ENTRY IN FAT" column in a linked-list fashion.
+
+Question: What is the data starting at index 06?
+
+#### 1.3 NTFS (New Technology FS, started with Windows NT 3.1)
+The new technology file system (NTFS) is currently the more dominant FS used by Windows versions occupying significant market share (e.g. 7/8/8.1/10). We first look at the layout of a formatted NTFS Volume:
+
+```
+------------------------------------------------------------------------
+| Partition Boot Sector | Master File Table | System Files | File Area |
+------------------------------------------------------------------------
+```
+
+Unlike the FAT, NTFS generally stores information using a B-Tree, here's an image depicting an example:
+
+![Sample of NTFS Directory](img/ntfs-directory.gif)
+
+We can see that for each directory above, we have $INDEX_ROOT with 2 keys `0` and `120.txt`. They each then split into another B-Tree Node with more keys, so on so forth...
+(For a node with A-B-C as the 3 keys, we can divide into 3 sections, namely A-B, B-C and C-?)
 
 
-### Introduction to Windows
+Let's focus on a little more details. Here are some attributes of a typical NTFS file that might be of interest:
+```
+$FILE_NAME - Stores filename along with creation time, change time etc.
+
+$OBJECT_ID - Attribute holding an ID used by Distributed Link Tracing Service.
+(Example: You have a shortcut to C:\secret.txt, you move it to C:\HIDDEN\secret.txt. The shortcut still works because of the ID pointing that very file!)
+
+$DATA - Contains the location of data (not the data itself), applies typically for files only
+```
+
+We also note that from NTFSv3.0+, The $SECURITY_DESCRIPTOR attribute is combined into a single metadata file $SECURE, which has the following key attributes:
+```
+$SDS - Contains a list of all $SECURITY_DESCRIPTOR on the volume
+	(Per $SECURITY_DESCRIPTOR, padded to 16 bytes each)
+	$SID - A unique entry identifying a user
+$SDH - Hash of all $SECURITY_DESCRIPTOR used for indexing purposes
+```
+At this junction, we just need to know that the Security ID (SID) is used to identify a user/group account in Windows.
+
+
+If you are detail-oriented, you may visit [here](http://ntfs.com/ntfs_basics.htm) to find out more.
+
+#### 1.4 ReFS (Resilient FS, deployed first Win Server 2012)
+The Resilient file system is used mainly to improve data availaibility and backup capabilities. This is largely achieved by setting up a mirror / parity space (in simpler terms, a working backup).
+
+Here are some features MS says about ReFS:
+```
+- *Integrity*: Repairs corrupted files using the copy
+- *Availaibility*: If no copy exists, salvage - remove unrepairable, corrupted data to prevent it from affecting other operations
+- *Scalability*: Can support volume sizes up to 2^78 bytes (and up to 2^64 - 1 bytes per file / files per directory)
+```
+
+### 2. Additional Windows Tools
+
 
 ### 3. Windows Command Prompt
 The Windows command prompt is normally invoked with certain credentials, we can initialize it as a normal user first (that is ourselves). Simply hit <kbd>Windows + R</kbd> and type `cmd` and press Enter to launch the command prompt.
@@ -22,6 +114,8 @@ Another note is the Absolute pathname difference:
 Format: [Drive]:\[Path]\[File].[Extension]
 Example: C:\Program Files\Java\jdk1.8.0_01\bin\javac.exe
 ```
+
+#### 3.1 Useful Commands
 
 Some useful commands for Windows Command Prompt are as follows:
 
@@ -123,12 +217,14 @@ setx path "C:\BAD_STUFF\;%path%"
 This will lead to C:\BAD_STUFF being search for first instead of %path%. Note that it also works without `setx` but in that case it only works for the current session.
 
 
-
+#### 3.2 Basic Batch File Scripting
 
 We can also write a basic batch files using the .bat extension:
 ```bat
-SET name=Bob The Builder &:: This is an appended comment
-SET /P filename=Enter a file name: &:: How to do input
+SET name=Bob The Builder
+:: Enter input for a variable with a given prompt to user
+SET /P filename=Enter a file name:
+:: Your typical if/else statements
 IF EXIST %filename% (
 	DEL /p %filename% &:: Deletes file after prompting user
 ) ELSE (
@@ -136,19 +232,27 @@ IF EXIST %filename% (
 )
 GOTO loopyloop
 :: Single-line comment, will be skipped! Note: GOTO can be used as loops!
+:: Single colon for labels, we can do loops using GOTO
 :loopyloop
-FOR %%F IN (*.txt) DO echo %%F &:: Display all .txt file names
+:: Single line for-loop (prints all .txt files)
+FOR %%F IN (*.txt) DO echo %%F
 
+:: Perform a function call and print out the result
 CALL :add 10 11 &:: Perform a function call with param1=10 and param2=11
 ECHO %RESULT% &:: should echo 21
 
+:: Define the add function
 :add
-SETLOCAL # Ensure all set only applies for local context
+:: Ensures all variables set applies to "local context"
+SETLOCAL
 set retval=0
-set a=%1 # %1 stands for first argument, %2 for second ...
+:: Note: %1 stands for first argument, %2 for second ...
+set a=%1
 set b=%2
-set /A "retval=a+b" &:: Use /A to perform arithmetic
-ENDLOCAL & SET result=%retval% &:: Set result to return value
+:: Use /A to perform arithmetic operations
+set /A "retval=a+b"
+:: Terminate "function scope" and set result as return value
+ENDLOCAL & SET result=%retval%
 ```
 
 Again, this is just a very small program and there are many other methods / functions out there. You may refer to [this link](https://en.wikibooks.org/wiki/Windows_Batch_Scripting) For more details
@@ -156,6 +260,7 @@ Again, this is just a very small program and there are many other methods / func
 
 ### 4. Windows Powershell
 
+### 5. Windows Registry
 
 ### 6. Communicating with Windows
 Very often, it is highly annoying to communicate with Windows on remote systems. One possible alternative is to try installing `netcat` and establishing a reverse (TCP) shell. That is, if we are targetting the windows system, we want it to connect back to us:
@@ -295,4 +400,4 @@ Many other mitigation techniques (e.g. [Heap Protection](https://blogs.technet.m
 
 ## The End
 
-Thanks for reading through this whole document! :)
+Thanks for reading through this whole document! :) [Also GitHub Markdown :(]
