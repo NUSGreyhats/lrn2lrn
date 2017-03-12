@@ -33,7 +33,7 @@ Enabling **GodMode** - Simply create a folder (e.g. on the Desktop) and name it 
 
 Enabling **Bash Shell** - If you can't stand CMD/Powershell, you can enable the "Windows subsystem for Linux (Beta)" option in "Turn Windows Features on/off" too
 
-About **Telemtry** - Microsoft collects data from its users. One of the typical ways to go about disabling it is to go the the Group Policy Editor `gpedit.msc` and set the value of "AllowTelemetry" to 0 (i.e. Don't collect). However, it is always important to read the fine print:
+About **Telemetry** - Microsoft collects data from its users. One of the typical ways to go about disabling it is to go the the Group Policy Editor `gpedit.msc` and set the value of "AllowTelemetry" to 0 (i.e. Don't collect). However, it is always important to read the fine print:
 
 ![](img/telemetry-gpedit.png)
 
@@ -101,7 +101,13 @@ Here are some features MS says about ReFS:
 - *Scalability*: Can support volume sizes up to 2^78 bytes (and up to 2^64 - 1 bytes per file / files per directory)
 ```
 
-### 2. Additional Windows Tools
+### 2. Additional Windows Tools for Security
+
+#### 2.1 Pentesting on Windows
+Normally the pentesting tools we use are typically installed on a Linux system. To try avoiding the hassle of running some VM, you can consider [this](https://tools.pentestbox.org) as a (very) viable alternative.
+
+#### 2.2 Reverse Engineering on Windows
+We
 
 
 ### 3. Windows Command Prompt
@@ -135,6 +141,13 @@ dir C:\ /s /b | find "SECRET"
 
 findstr /S /I confidential *.*
 - Search for all files in subdirectories etc. for the word confidential, non-case sensitive
+
+
+fc file1.txt file2.txt
+- Compares if 2 files are the same or not, equivalent to 'diff' in Linux
+
+fciv [-sha1] [FILE]
+- Generates the md5/sha1 checksum of a file
 ```
 
 Windows Services / Tasks
@@ -261,6 +274,32 @@ Again, this is just a very small program and there are many other methods / func
 ### 4. Windows Powershell
 
 ### 5. Windows Registry
+
+#### 5.1 Overview of Windows Registry
+The Windows Registry is a "central storehouse" for all settings on Windows operating systems. They can be broadly classified into the following:
+
+- HKEY_CLASSES_ROOT -> Contains information on file types, default programs for file type etc.
+- HKEY_CURRENT_USER -> Contains user-specific information built from HKEY_USERS during logon process
+- HKEY_LOCAL_MACHINE -> Contains information about installed hardware and software
+- HKEY_USERS -> Contains program settings, desktop configuration etc. for all users
+- HKEY_CURRENT_CONFIG -> Contains information about hardware configuration
+
+#### 5.2 CLSID
+We note that that there is a CLSID folder at `HKEY_CLASSES_ROOT\CLSID`, which contain subfolders looking something like `{018D5C66-4533-4307-9B53-224DE2ED1FE6}`. This (at least in Windows 10) represents the globally unique identifier (GUID) for programs and services. For example, we know that the GUID {018D5C66-4533-4307-9B53-224DE2ED1FE6} belong to Microsoft OneDrive:
+
+![OneDrive Registry Folder](img/onedrive-registry.png)
+
+For instance, changing System.isPinnedToNameSpaceTree to 0 removes OneDrive from the Explorer Folder tree (left panel). Note that it is OS-specific, e.g. OneDrive in Windows 8 has CLSID `{8E74D236-7F35-4720-B138-1FED0B85EA75}` instead.
+
+We can also directly reach a specific control panel applet / Windows feature by using <kbd>Windows + R</kbd> and using shell:::{GUID}, for instance:
+```
+shell:::{7007ACC7-3202-11D1-AAD2-00805FC1270E}
+```
+brings up the Network connections folder on Windows 10. For a list of typical GUIDs on a Windows 10 system, you may refer to [this](http://winaero.com/blog/clsid-guid-shell-location-list-in-windows-10-anniversary-update/) guide here.
+
+#### 5.3 Startup Programs
+
+
 
 ### 6. Communicating with Windows
 Very often, it is highly annoying to communicate with Windows on remote systems. One possible alternative is to try installing `netcat` and establishing a reverse (TCP) shell. That is, if we are targetting the windows system, we want it to connect back to us:
