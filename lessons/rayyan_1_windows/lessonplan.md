@@ -464,14 +464,14 @@ Note that over here IdentitiyReference typically goes by DOMAIN\name when we try
 Suppose I want to modify `C:\secret`, then I can assign myself the following permissions using the following mini Powershell script (yes you can script things!:
 ```powershell
 $Acl = (Get-Item C:\secret).GetAccessControl('Access')
-$New-Perm = New-Object System.Security.AccessControl.FileSystemAccessRule(My-PC\ary, 'Modify',                 'ContainerInherit,ObjectInherit', 'None', 'Allow')
+$New-Perm = New-Object System.Security.AccessControl.FileSystemAccessRule(My-PC\ary, 'Modify', 'ContainerInherit,ObjectInherit', 'None', 'Allow')
 $Acl.setAccessRule($New-Perm)
 Set-Acl -Path C:\secret -AclObject $Acl
 ```
 Basically, we assign `$Acl` to the current ACL settings. Then, we create new permission setting `$New-Perm` that allows the My-PC\ary user to modify `C:\secret` and this applies to all folders (ContainerInherit) and files (ObjectInherit) underneath it. We finally apply the new access rule using `Set-Acl`.
 
 In case it is difficult to understand, it is (roughly) equvalent to the following in a Linux bash shell (asuming My-PC\ary is owner):
-```bash
+```sh
 chmod u+w -R /secret
 ```
 
