@@ -1,22 +1,22 @@
 # Web Application Technologies
 
 ## Table of Contents
-0. [HTTP Protocol] (#http-protocol)
-1. [URLs and HTTP Methods] (#urls-and-http-methods)
-2. [Cookies] (#cookies)
-3. [Status Codes] (#status-codes)
-4. [HTTPS Protocol] (#https-protocol)
-5. [Encoding Schemes] (#encoding-schemes)
-6. [Resources] (#resources)
+0. [HTTP Protocol](#http-protocol)
+1. [URLs and HTTP Methods](#urls-and-http-methods)
+2. [Cookies](#cookies)
+3. [Status Codes](#status-codes)
+4. [HTTPS Protocol](#https-protocol)
+5. [Encoding Schemes](#encoding-schemes)
+6. [Resources](#resources)
 
 ## HTTP Protocol
 <!-- #![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20protocol.png ) -->
-![] (https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP.png)
+![](https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/images/HTTP.png)
 
 The Hypertext transfer protocol (HTTP) is a common protocol used to access the World Wide Web and used by web applications. HTTP uses a message-based model in which a client sends a request message and the server returns a response message.
 
 ### HTTP Requests
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20requests.png)
+![alt text](https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20requests.png)
 
  | Description 
 --- | --- 
@@ -27,7 +27,7 @@ Host header | Specifies hostname that appeared in full URL being accessed.
 Cookie header | Used to submit additional parameters that server issued to the client.
 
 ### HTTP Responses
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20responses.png)
+![alt text](https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20responses.png)
 
  | Description 
 --- | --- 
@@ -83,7 +83,7 @@ Cookies are a key part of the HTTP protocol that most web applications use. They
 
 Unlike the other types of request parameters (those within the URL query string or the message body), cookies continue to be resubmitted in each subsequent request without any particular action required by the application or the user.
 
-![] (http://niyuj.com/wp-content/uploads/2016/05/C2GNfi.png)
+![](http://niyuj.com/wp-content/uploads/2016/05/C2GNfi.png)
 
 A server issues a cookie using the `Set-Cookie` response header as shown below:
 
