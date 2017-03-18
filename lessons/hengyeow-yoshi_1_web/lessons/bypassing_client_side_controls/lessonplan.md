@@ -1,10 +1,10 @@
 # Bypassing Client-Side Controls
 
 ## Table of Contents
-0. [Server-Side and Client-Side Functionality] (#server-side-and-client-side-functionality)
-1. [Example of modifying HTTP Headers] (#example-of-modifying-http-headers)
-2. [Introduction to Client-Side Authentication with Javascript] (#introduction-to-client-side-authentication-with-javascript)
-3. [Resources] (#resources)
+0. [Server-Side and Client-Side Functionality](#server-side-and-client-side-functionality)
+1. [Example of modifying HTTP Headers](#example-of-modifying-http-headers)
+2. [Introduction to Client-Side Authentication with Javascript](#introduction-to-client-side-authentication-with-javascript)
+3. [Resources](#resources)
 
 ## Server-Side and Client-Side Functionality 
 
@@ -33,7 +33,7 @@ CSS | Language used to describe the presentation of a document written in a mark
 JavaScript | Programming language that is used to extend web interfaces in which the client side is used not simply to submit user data and actions but also to perform actual processing of data. <u><li>I.e. Certain tasks can be carried out entirely on the client component, without needing to make a round trip of request and response to the server.</li></u>
 
 ### Example of Server and Client Interaction
-![] (https://i2.wp.com/wpshout.com/media/2014/08/client_server.png?w=1440&ssl=1)
+![](https://i2.wp.com/wpshout.com/media/2014/08/client_server.png?w=1440&ssl=1)
 
 ## Example of modifying HTTP Headers
 
@@ -93,13 +93,13 @@ Connect to `https://net-force.nl/challenge/level101/`. Upon clicking on `Secret 
 
 Connect to `https://net-force.nl/challenge/level102/`. Upon viewing the page source, it shows the JavaScript function that tests your input for the password. Our interest lies in the javascript function:
 
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/javascript%20example.png)
+![alt text](https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/javascript%20example.png)
 
 It seems that the script is checking the user input with a generated password (the steps are shown in the function).
 
 We can use an [online javascript compiler] (http://js.do/) and tweak the javascript to show us what the generated password of the javascript is. Note that adding `alert(password)` shows us the output of the password variable.
 
-![alt text] (https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/javascript%20compiler.png)
+![alt text](https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/javascript%20compiler.png)
 
 
 ## Resources
