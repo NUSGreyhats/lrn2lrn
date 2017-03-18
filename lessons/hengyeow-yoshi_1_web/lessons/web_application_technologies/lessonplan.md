@@ -18,7 +18,7 @@ The Hypertext transfer protocol (HTTP) is a common protocol used to access the W
 ### HTTP Requests
 ![alt text](https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20requests.png)
 
- | Description 
+Headers | Description 
 --- | --- 
 First line of HTTP request separated by spaces | <ul><li>1. The HTTP method </li><li>2. The requested URL </li><li>3. The HTTP Version</li></ul>
 Referer header | Shows the URL where the requested originated from (i.e. the user clicked a link on that page).
@@ -29,7 +29,7 @@ Cookie header | Used to submit additional parameters that server issued to the c
 ### HTTP Responses
 ![alt text](https://github.com/tanhengyeow/lrn2lrn/blob/master/lessons/hengyeow-yoshi_1_web/src/http%20responses.png)
 
- | Description 
+Headers | Description 
 --- | --- 
 First line of HTTP response separated by spaces | <ul><li>1. The HTTP Version </li><li>2. A numeric status code indicating the result of the request. </li></ul>
 Server header | Indicates the web server software/installed modules/server operating system.
