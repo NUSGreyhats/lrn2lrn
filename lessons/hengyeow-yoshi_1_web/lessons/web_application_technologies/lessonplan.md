@@ -97,7 +97,7 @@ Cookies normally consist of a name/value pair, as shown, but they may consist of
 
 In addition to the cookie’s actual value, the `Set-Cookie` header can include any of the following optional attributes, which can be used to control how the browser handles the cookie:
 
- | Description
+Headers | Description
 --- | ---
 expires | sets a date until which the cookie is valid. If this attribute is not set, the cookie is used only in the current browser session.
 domain | specifies the domain for which the cookie is valid. This must be the same or a parent of the domain from which the cookie is received.
