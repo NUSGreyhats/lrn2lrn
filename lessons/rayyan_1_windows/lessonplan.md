@@ -44,7 +44,7 @@ This document serves as a quick overview of the different aspects of Microsoft W
 ### 1. Windows and Associated Filesystems
 
 #### 1.1 Windows Basics(?)
-Welome to Microsoft Windows. Maybe here's some interesting stuff about it
+Welome to Microsoft Windows. Maybe here's some interesting stuff about it   
 
 Enabling **GodMode** - Simply create a folder (e.g. on the Desktop) and name it as "GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}" in order to access the many features you can customize graphically on Windows (largely similar to Control Panel).
 
@@ -689,7 +689,7 @@ By corrupting the `Next` Pointer or the `Handler` routine, we are able to execut
 
 ```
       -------   Next   -------    Next     -------  
-	  | EX1 |  ----->  | EX2 | -----XXXXX> | EX3 |
+      | EX1 |  ----->  | EX2 | -----XXXXX> | EX3 |
       -------          -------     |       -------
                                    |
       Change Next Pointer of EX2   |       -------
