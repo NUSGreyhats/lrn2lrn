@@ -74,6 +74,29 @@ Host: host_name <\r\n>
 ```
 
 ---
+
+### Case study: DNS
+- Domain Name System (DNS) provides a translation between a host name and its IP address
+- It runs over UDP for the query to be as quick as possible
+
+#### Path of DNS query
+- for example, `www.example.com`
+- `www.example.com` is really `www.example.com.`
+
+0. Query is sent to the local DNS server: if the same query not cached, redirects to
+1. Root server => `.`: redirects the query to
+2. Top Level Domain (TLD) server => `.com`: redirects the query to
+3. Authoritative name server of `example.com`: finally gives the IP address of `www.example.com` and returns
+
+**note**: DNS query in reverse order i.e. IP address to host name is known as `reverse DNS lookup`.
+
+#### DNS cache poisoning
+- when a DNS query for a host name has been made, the  DNS servers/OS will cache it to make the next queries for the same host name faster
+- This cache could be `poisoned` => the hostname-to-IP-address entry could be overwritten maliciously in the DNS servers/OS so that when a host tries to access another legitimate host using its host name, it gets directed to a completely different host through an incorrect IP address mapping.
+
+#### Related write-ups
+1. <http://akaminsky.net/plaidctf-quals-2014-web-300-whatscat/>
+
 ### Types of security protocols at different layers
 **Note**: it is not necessarily the case that one security protocol completely covers the entire layer. Also, one security protocol may span across multiple layers.
 
@@ -82,6 +105,6 @@ Network Layer | Examples of security protocols
 Physical/Link layer | <ul><li>WPA</li><li>WEP</li></ul>
 network (IP) layer | <ul><li>IPSec</li></ul>
 Transport layer | <ul><li>TLS</li><li>SSL</li><li>SSH</li></ul>
-Application Layer | <ul><li>PGP</li><li>HTTPS</li><li>S/MIME</li></ul>
+Application Layer | <ul><li>DNSSEC</li><li>PGP</li><li>HTTPS</li><li>S/MIME</li></ul>
 
 If interested, take a look at <http://www.tutorialspoint.com/network_security/>
