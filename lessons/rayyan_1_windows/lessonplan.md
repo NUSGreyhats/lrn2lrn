@@ -35,7 +35,7 @@
 ---
 
 ### 0. Foreword
-This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document. If you are attending this live, I will see what I can do additionally on my own Windows installation to demonstrate and highlight some poitns.
+This document serves as a quick overview of the different aspects of Microsoft Windows. It is by no means comprehensive nor extensive. It just aims to help you take home something new at the end of the document. If you are attending this live, I will see what I can do additionally on my own Windows installation to demonstrate and highlight some points.
 
 **It would be best if you have Windows for this introduction!**
 
