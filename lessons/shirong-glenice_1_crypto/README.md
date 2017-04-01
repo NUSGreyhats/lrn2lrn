@@ -1,4 +1,4 @@
-# What is Cryptography
+# What is Cryptography?
 If you look at the origin of the root words of cryptography (crypto and graphy), you will see that "crypto" stands for "hidden, secret", and "graphy" denotes "a process or form of drawing, writing, representing, recording, describing, etc., or an art or science concerned with such a process."
 
 *Tldr; cryptography is the science concerned with the study of secret communication*
@@ -42,7 +42,7 @@ e.g. AES, SHA-256, RSA, RC4 etc…
 In cryptography, an initialization vector (IV) or starting variable (SV) is a fixed-size input to a cryptographic primitive that is typically required to be random or pseudorandom. Randomization is crucial for encryption schemes to achieve semantic security, a property whereby repeated usage of the scheme under the same key does not allow an attacker to infer relationships between segments of the encrypted message.
 Properties of an IV depend on the cryptographic scheme used. A basic requirement is uniqueness, which means that no IV may be reused under the same key. For block ciphers, repeated IV values devolve the encryption scheme into electronic codebook mode: equal IV and equal plaintext result in equal ciphertext. In stream cipher encryption uniqueness is crucially important as plaintext may be trivially recovered otherwise.
 
-# Wired Equivalent Privacy - WEP
+# Wired Equivalent Privacy (WEP)
 WEP was created in 1997 as part of an optional mechanism in the 802.11 standard for wireless LAN communication. Its purpose was to provide confidentiality and integrity of traffic in the WLAN. WEP is used at the two lowest layers of the OSI reference model (Data link and physical). It relies on the stream cipher RC4 for data confidentiality and CRC-32 for data integrity. It uses a symmetric key (Pre-Shared Key) to encrypt the message.
 
 WEP | 64 bit WEP | 128 bit WEP
@@ -73,7 +73,7 @@ Ciphertext + key -> Message
 
 Note: '+' is a function, e.g. XOR, ROT, etc..
 
-# Rivest Cipher 4 - RC4
+# Rivest Cipher 4 (RC4)
 The RC4 stream cipher used by WEP is based on two algorithms.
 ##### Key Scheduled Algorithm (KSA) 
 A key schedule is an algorithm that, given the key, calculates the subkeys for these rounds.
@@ -107,7 +107,7 @@ endwhile
 http://www.crypto.com/papers/others/rc4_ksaproc.pdf
 
 
-# Cyclic Redundancy Check (CRC) - CRC-32
+# Cyclic Redundancy Check (CRC)
 CRC is a hash function used by the WEP Protocol to ensure data integrity.  The principle of CRC32 stands in a kind of polynomial division. The original message is XORed with a constant of 32 bits followed by as many 0 as necessary to reach the length of the message. The result becomes the new “message” and the operation is repeated until the length of the result is under the length of the constant.
 
 ``` python
@@ -126,8 +126,7 @@ def crc_remainder(input_bitstring, polynomial_bitstring, initial_filler):
 				input_padded_array[cur_shift + i] = '1'
 	return ''.join(input_padded_array)[len_input:]
 ```
-<CRC Exercise>
-Calculate the CRC-3 for 10101010 and verify it.
+**CRC Exercise** : Calculate the CRC-3 for 10101010 and verify it.
 
 
 ###### List of common CRC Standards:
