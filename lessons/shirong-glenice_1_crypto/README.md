@@ -52,6 +52,14 @@ Stream ciphers typically execute at a higher speed than block ciphers and have l
 ######  For further reading:
 https://en.wikipedia.org/wiki/Stream_cipher#Types_of_stream_ciphers
 
+# Symmetric Key Algorithms
+A symmetric key algorithm uses the same key to both encrypt and decrypt a message
+
+Message + key -> Ciphertext
+Ciphertext + key -> Message
+
+Note: '+' is a function, e.g. XOR, ROT, etc..
+
 # Rivest Cipher 4 - RC4
 The RC4 stream cipher used by WEP is based on two algorithms.
 ##### Key Scheduled Algorithm (KSA) 
@@ -81,9 +89,6 @@ while GeneratingOutput:
 endwhile
 ```
 
-
-<RC4 lab>
-Given ciphertext, Key and IV, generate stream key to get the message.
 
 ######  Further Reading - Weakness in RC4 KSA:
 http://www.crypto.com/papers/others/rc4_ksaproc.pdf
