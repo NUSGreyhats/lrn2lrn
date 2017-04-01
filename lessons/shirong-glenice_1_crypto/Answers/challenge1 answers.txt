@@ -1,0 +1,2 @@
+Cipher Text: today is all about cryptography
+Key: yitvumespoqkzahnlrbcdjfwxg
