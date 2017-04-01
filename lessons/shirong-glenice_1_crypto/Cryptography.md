@@ -38,8 +38,9 @@ Properties of an IV depend on the cryptographic scheme used. A basic requirement
 
 # Wired Equivalent Privacy - WEP
 WEP was created in 1997 as part of an optional mechanism in the 802.11 standard for wireless LAN communication. Its purpose was to provide confidentiality and integrity of traffic in the WLAN. WEP is used at the two lowest layers of the OSI reference model (Data link and physical). It relies on the stream cipher RC4 for data confidentiality and CRC-32 for data integrity. It uses a symmetric key (Pre-Shared Key) to encrypt the message.
--- | 64 bit WEP | 128 bit WEP
----|-----------|------------
+
+WEP | 64 bit WEP | 128 bit WEP
+----|-----------|------------
 Key size | 40 bits | 104 bits
 IV size | 24 bits | 24 bits
 
