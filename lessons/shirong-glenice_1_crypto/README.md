@@ -1,3 +1,9 @@
+# What is Cryptography
+If you look at the origin of the root words of cryptography (crypto and graphy), you will see that "crypto" stands for "hidden, secret", and "graphy" denotes "a process or form of drawing, writing, representing, recording, describing, etc., or an art or science concerned with such a process."
+
+*Tldr; cryptography is the science concerned with the study of secret communication*
+
+
 # What is Caesar Cipher?
 The Caesar cipher, also known as a shift cipher, is one of the simplest forms of encryption. It is a substitution cipher where each letter in the original message (called the plaintext) is replaced with a letter corresponding to a certain number of letters up or down in the alphabet. (Wikipedia)
 
@@ -46,7 +52,14 @@ IV size | 24 bits | 24 bits
 
 # Stream Cipher
 A stream cipher is a symmetric key cipher where plaintext digits are combined with a pseudorandom cipher digit stream (keystream). In a stream cipher, each plaintext digit is encrypted one at a time with the corresponding digit of the keystream, to give a digit of the ciphertext stream. Since encryption of each digit is dependent on the current state of the cipher, it is also known as state cipher. In practice, a digit is typically a bit and the combining operation an exclusive-or (XOR).
- 
+
+A | B | XOR
+--|---|----
+0|0|0
+0|1|1
+1|0|1
+1|1|0
+
 Stream ciphers typically execute at a higher speed than block ciphers and have lower hardware complexity. However, stream ciphers can be susceptible to serious security problems if used incorrectly (see stream cipher attacks); in particular, the same starting state (seed) must never be used twice.
 
 ######  For further reading:
