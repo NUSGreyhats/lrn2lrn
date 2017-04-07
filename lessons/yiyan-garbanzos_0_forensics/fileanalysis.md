@@ -66,9 +66,10 @@ Let's try out file, TrID and binwalk on the following files.
 
 ### Online File Format Identifiers
 Just some online alternatives:
-0. [Toolsley File Identifier](https://www.toolsley.com/file.html)
-1. [Falstaff](http://ec2-52-37-126-112.us-west-2.compute.amazonaws.com/falstaff/)
+
+1. [Toolsley File Identifier](https://www.toolsley.com/file.html)
+2. [Falstaff](http://ec2-52-37-126-112.us-west-2.compute.amazonaws.com/falstaff/)
 
 ## File Formats
-0. [png](./png.md)
-1. TBC
+1. [png](./png.md)
+2. TBC
