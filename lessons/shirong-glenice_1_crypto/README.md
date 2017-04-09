@@ -143,7 +143,16 @@ Ciphertext = **M.c(M) XOR RC4(V,K)**
 
 The cipher text is then sent on the network. A user who knows **K** can get the message by XORing the cipher text with the keystream. **M.c(M) = Ciphertext XOR RC4(V,K)**
 
-# Attacks on WEP (Coming Soon)
+# Attacks on WEP
+###### Small Initialisation Vector
+WEP’s IV size of 24 bits provides for 16,777,216 different RC4 cipher streams for a given WEP key, for any key size. Remember that the RC4 cipher stream is XOR-ed with the original packet to give the encrypted packet which is transmitted, and the IV is sent in the clear with each packet. The problem is IV reuse. If the RC4 cipher stream for a given IV is found, an attacker can decrypt subsequent packets that were encrypted with the same IV, or, can forge packets. This means that you don’t need to know the WEP key to decrypt packets if you know what the key stream was used to encrypt that packet. They sound like similar problems, but it’s actually much easier to discover the key stream than it is to discover the WEP key.
+Since there are only 16 million IV values, how the IV is chosen makes a big difference in the attacks based on IV. Unfortunately, WEP doesn’t specify how the IV is chosen or how often the IV is changed. Some implementations start the IV at zero and increase it incrementally for each packet, rolling over back to zero after 16 million packets have been sent. Some implementations choose IVs randomly. That sounds like a good idea, but it really isn't. With a randomly chosen IV, there is a 50% chance of reuse after less than 5000 packets.
+
+###### WEP Attack Process
+https://www.aircrack-ng.org/doku.php?id=simple_wep_crack
+
+###### Further Reading (If you're good at math)
+KoreK Attacks : https://lasec.epfl.ch/pub/lasec/doc/cha06.pdf
 
 # Asymmetric Encryption
 While symmetric encryption uses only 1 key for encryption and decryption, asymmetric algorithms requires 2 types of keys: Public and Private.
