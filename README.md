@@ -8,6 +8,9 @@ The Greyhats Lrn2Lrn Series where People Teach Each Other Things. Please see
 1. [Sample Lesson][1]
 2. [Introduction to x86 Assembly][2]
 3. [Introduction to Linux Exploitation][3]
+4. [Introduction to Web Security][4]
+5. [Introduction to Windows][5]
+6. [Introduction to Crypto][6]
 
 ## Getting Started
 
@@ -52,3 +55,8 @@ Feel free to add more topics you are interested in.
 [1]: ./lessons/amon_0_sample/lessonplan.md
 [2]: ./lessons/lucy-nicholas-xinan_0_x86/lessonplan.md
 [3]: ./lessons/fiona-yuxi_3_linux/lessonplan.md
+[4]: ./lessons/hengyeow-yoshi_1_web/lessonplan.md
+[5]: ./lessons/rayyan_1_windows/lessonplan.md
+[6]: ./lessons/shirong-glenice_1_crypto/lessonplan.md
+
+
